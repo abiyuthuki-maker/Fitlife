@@ -1,239 +1,141 @@
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Dumbbell,
+  Mail,
+  Lock,
   Eye,
   EyeOff,
   ArrowRight,
-  CheckCircle,
+  UserRound,
 } from "lucide-react";
 
-function Login() {
+export default function Login() {
   const navigate = useNavigate();
 
-  const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  const handleLogin = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setError("");
+    setSuccess("");
 
-    if (!email || !password) {
+    if (!email.trim() || !password) {
+      setError("Please enter your email and password.");
       return;
     }
 
-    // Temporary login navigation.
-    // JWT backend authentication can be connected later.
-    navigate("/");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    // Demo only: no server authentication is connected.
+    setSuccess("Login form submitted successfully!");
+
+    // Connect your backend authentication here.
   };
 
   return (
-    <div className="auth-page">
+    <main className="login-page">
+      <div className="login-container">
+        <Link to="/" className="login-brand">
+          <span className="login-brand-icon">
+            <Dumbbell size={23} />
+          </span>
+          FIT<span>LIFE</span>
+        </Link>
 
-      {/* LEFT SIDE */}
-      <section className="auth-brand">
-
-        <div className="auth-brand-content">
-
-          <Link to="/" className="logo auth-logo">
-            <span className="logo-icon">
-              <Dumbbell size={22} />
-            </span>
-
-            <span>
-              FIT<span>LIFE</span>
-            </span>
-          </Link>
-
-          <div className="auth-hero-text">
-
-            <span className="section-label">
-              WELCOME BACK
-            </span>
-
-            <h1>
-              Continue Your
-              <span> Fitness Journey.</span>
-            </h1>
-
-            <p>
-              Sign in to continue tracking your workouts,
-              progress, nutrition and AI-powered fitness
-              guidance.
-            </p>
-
-            <div className="auth-benefits">
-
-              <div>
-                <CheckCircle size={19} />
-                <span>Personalized workouts</span>
-              </div>
-
-              <div>
-                <CheckCircle size={19} />
-                <span>AI Form Check</span>
-              </div>
-
-              <div>
-                <CheckCircle size={19} />
-                <span>Track your progress</span>
-              </div>
-
-            </div>
-
+        <section className="login-card">
+          <div className="login-icon">
+            <UserRound size={28} />
           </div>
 
-        </div>
+          <p className="login-eyebrow">WELCOME BACK</p>
 
-      </section>
+          <h1>
+            Login to <span>FITLIFE</span>
+          </h1>
 
+          <p className="login-description">
+            Continue your fitness journey and build a healthier lifestyle.
+          </p>
 
-      {/* RIGHT SIDE */}
-      <section className="auth-form-area">
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="login-email">Email Address</label>
 
-        <div className="auth-form-box">
-
-          <button
-            type="button"
-            className="auth-back"
-            onClick={() => navigate("/")}
-          >
-            ← Back to Home
-          </button>
-
-
-          <div className="auth-heading">
-
-            <h2>
-              Welcome Back 👋
-            </h2>
-
-            <p>
-              Login to your FITLIFE account
-            </p>
-
-          </div>
-
-
-          <form onSubmit={handleLogin}>
-
-            <div className="form-group">
-
-              <label htmlFor="login-email">
-                Email Address
-              </label>
-
+            <div className="login-input-wrap">
+              <Mail size={18} />
               <input
                 id="login-email"
                 type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
                 autoComplete="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                required
+              />
+            </div>
+
+            <label htmlFor="login-password">Password</label>
+
+            <div className="login-input-wrap">
+              <Lock size={18} />
+              <input
+                id="login-password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                autoComplete="current-password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
                 required
               />
 
+              <button
+                type="button"
+                className="login-eye"
+                onClick={() => setShowPassword((value) => !value)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
 
+            {error && (
+              <p className="login-message login-error" role="alert">
+                {error}
+              </p>
+            )}
 
-            <div className="form-group">
+            {success && (
+              <p className="login-message login-success" role="status">
+                {success}
+              </p>
+            )}
 
-              <div className="password-label">
-
-                <label htmlFor="login-password">
-                  Password
-                </label>
-
-                <button
-                  type="button"
-                  className="forgot-password"
-                >
-                  Forgot Password?
-                </button>
-
-              </div>
-
-
-              <div className="password-input">
-
-                <input
-                  id="login-password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  autoComplete="current-password"
-                  required
-                />
-
-                <button
-                  type="button"
-                  aria-label={
-                    showPassword
-                      ? "Hide password"
-                      : "Show password"
-                  }
-                  onClick={() =>
-                    setShowPassword(!showPassword)
-                  }
-                >
-                  {showPassword ? (
-                    <EyeOff size={19} />
-                  ) : (
-                    <Eye size={19} />
-                  )}
-                </button>
-
-              </div>
-
-            </div>
-
-
-            <label className="remember-me">
-
-              <input type="checkbox" />
-
-              <span>
-                Remember me
-              </span>
-
-            </label>
-
-
-            <button
-              type="submit"
-              className="auth-submit"
-            >
-              Login
-              <ArrowRight size={19} />
+            <button className="login-submit" type="submit">
+              Login <ArrowRight size={18} />
             </button>
-
           </form>
 
-
-          <div className="auth-divider">
-            <span>OR</span>
+          <div className="login-divider">
+            <span>YOUR FITNESS JOURNEY STARTS HERE</span>
           </div>
 
+          <Link to="/" className="login-home-link">
+            ← Back to Home
+          </Link>
+        </section>
 
-          <div className="auth-signup">
-
-            <span>
-              Don't have an account?
-            </span>
-
-            <Link to="/get-started">
-              Get Started
-            </Link>
-
-          </div>
-
-        </div>
-
-      </section>
-
-    </div>
+        <p className="login-footer">
+          © 2026 FITLIFE · Your fitness. Your wellness. Your life.
+        </p>
+      </div>
+    </main>
   );
 }
-
-export default Login;

@@ -1,0 +1,84 @@
+
+/*
+
+.ai-page {
+  min-height: 100vh;
+  padding: 32px;
+  background: #07110d;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+}
+
+.ai-header {
+  margin-bottom: 24px;
+}
+
+.ai-header h1 {
+  color: #a7f23d;
+  font-size: 32px;
+}
+
+.ai-header p {
+  color: #a8b5ad;
+}
+
+.ai-layout {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 24px;
+}
+
+.ai-card {
+  padding: 24px;
+  background: #111d16;
+  border: 1px solid #293a2e;
+  border-radius: 18px;
+}
+
+.ai-video {
+  width: 100%;
+  min-height: 280px;
+  background: #000;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.ai-button {
+  margin: 8px 8px 0 0;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #a7f23d;
+  color: #07110d;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.ai-stat {
+  margin: 16px 0;
+  padding: 16px;
+  background: #1a2a1e;
+  border-radius: 12px;
+}
+
+.ai-progress {
+  height: 8px;
+  background: #293a2e;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.ai-progress-bar {
+  height: 100%;
+  background: #a7f23d;
+}
+
+@media (max-width: 768px) {
+  .ai-page {
+    padding: 16px;
+  }
+
+  .ai-layout {
+    grid-template-columns: 1fr;
+  }
+}
