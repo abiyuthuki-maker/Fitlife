@@ -66,7 +66,7 @@ function Home() {
           </a>
 
 
-          <a href="/al form">
+          <a href="#al form">
             AI Form Check
           </a>
 
@@ -80,7 +80,7 @@ function Home() {
 
          
 
-          <a href="/delivery">
+          <a href="#delivery">
   Delivery
 </a>
 
