@@ -11,6 +11,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Wellness from "./pages/Wellness";
 import Nutrition from "./pages/Nutrition";
+import Progress from "./pages/Progress";
+import GetStarted from "./pages/GetStarted";
 
 
 
@@ -26,6 +28,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/wellness" element={<Wellness />} />
        <Route path="/nutrition" element={<Nutrition />} />
+       <Route path="/progress" element={<Progress />} />
+       <Route path="/" element={<GetStarted />} />
+     
 
         <Route
           path="*"
