@@ -14,33 +14,7 @@ import {
 } from "lucide-react";
 
 function Home() {
-  const workouts = [
-    {
-      title: "Full Body Workout",
-      level: "Beginner",
-      time: "20 min",
-      calories: "180 kcal",
-      image:
-        "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=80",
-    },
-    {
-      title: "Strength Training",
-      level: "Intermediate",
-      time: "30 min",
-      calories: "260 kcal",
-      image:
-        "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=900&q=80",
-    },
-    {
-      title: "HIIT Cardio",
-      level: "Advanced",
-      time: "25 min",
-      calories: "320 kcal",
-      image:
-        "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=900&q=80",
-    },
-  ];
-
+  
   return (
     <div className="home-page">
 
@@ -74,7 +48,7 @@ function Home() {
             Nutrition
           </a>
 
-          <a href="#progress">
+          <a href="/progress">
             Progress
           </a>
 
@@ -145,8 +119,8 @@ function Home() {
             <Flame size={18} />
 
             <div>
-              <strong>320</strong>
-              <span>Calories Burned</span>
+              <strong></strong>
+              <span></span>
             </div>
 
           </div>
