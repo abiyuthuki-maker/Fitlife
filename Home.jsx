@@ -40,9 +40,9 @@ function Home() {
           </a>
 
 
-          <a href="#al form">
-            AI Form Check
-          </a>
+          <a href="#ai-form-check">
+  AI Form Check
+</a>
 
           <a href="/nutrition">
             Nutrition
@@ -54,7 +54,7 @@ function Home() {
 
          
 
-          <a href="#delivery">
+          <a href="delivery">
   Delivery
 </a>
 

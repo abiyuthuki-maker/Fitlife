@@ -1,352 +1,503 @@
+
 import React, { useState } from "react";
 import {
-  Truck,
-  MapPin,
-  Package,
-  CheckCircle,
-  Clock,
-  ArrowLeft,
   ShoppingBag,
+  Plus,
+  Minus,
+  Trash2,
+  Truck,
+  Search,
+  Leaf,
+  CheckCircle,
 } from "lucide-react";
 
+import "./Delivery.css";
+
+
+const foodItems = [
+  {
+    id: 1,
+    name: "Red Rice & Curry",
+    category: "Meals",
+    price: 450,
+    image:
+      "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=600",
+    description: "",
+  },
+  {
+    id: 2,
+    name: "String Hoppers & Dhal",
+    category: "Breakfast",
+    price: 350,
+    image:
+      "https://images.unsplash.com/photo-1547592180-85f173990554?w=600",
+    description: "",
+  },
+  {
+    id: 3,
+    name: "Kiribath",
+    category: "Breakfast",
+    price: 300,
+    image:
+      "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=600",
+    description: "",
+  },
+  {
+    id: 4,
+    name: "Gotukola Mallung",
+    category: "Healthy",
+    price: 200,
+    image:
+      "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600",
+    description: "",
+  },
+  {
+    id: 5,
+    name: "Boiled Kadala",
+    category: "Snacks",
+    price: 180,
+    image:
+      "https://images.unsplash.com/photo-1515543904379-3d757afe72e4?w=600",
+    description: "",
+  },
+  {
+    id: 6,
+    name: "Egg Hoppers",
+    category: "Breakfast",
+    price: 250,
+    image:
+      "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=600",
+    description: "",
+  },
+  {
+    id: 7,
+    name: "Fish Curry & Rice",
+    category: "Meals",
+    price: 500,
+    image:
+      "https://images.unsplash.com/photo-1547592180-85f173990554?w=600",
+    description: "",
+  },
+  {
+    id: 8,
+    name: "Fresh Fruit Bowl",
+    category: "Healthy",
+    price: 300,
+    image:
+      "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=600",
+    description: "",
+  },
+];
+
 function Delivery() {
-  const [orderId, setOrderId] = useState("");
+  
+  const [orders, setOrders] = useState([]);
 
-  const handleTrack = (e) => {
-    e.preventDefault();
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("All");
 
-    if (!orderId.trim()) {
-      alert("Please enter your Order ID.");
+ 
+  const [orderMessage, setOrderMessage] = useState("");
+
+  const categories = [
+    "All",
+    "Meals",
+    "Breakfast",
+    "Healthy",
+    "Snacks",
+  ];
+
+ 
+  const filteredItems = foodItems.filter((food) => {
+    const matchesSearch = food.name
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+    const matchesCategory =
+      category === "All" || food.category === category;
+
+    return matchesSearch && matchesCategory;
+  });
+
+ 
+  const addToOrder = (food) => {
+    setOrderMessage("");
+
+    setOrders((previousOrders) => {
+      const existing = previousOrders.find(
+        (item) => item.id === food.id
+      );
+
+      if (existing) {
+        return previousOrders.map((item) =>
+          item.id === food.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+
+      return [
+        ...previousOrders,
+        { ...food, quantity: 1 },
+      ];
+    });
+  };
+
+  
+  const changeQuantity = (id, amount) => {
+    setOrderMessage("");
+
+    setOrders((previousOrders) =>
+      previousOrders
+        .map((item) =>
+          item.id === id
+            ? {
+                ...item,
+                quantity: item.quantity + amount,
+              }
+            : item
+        )
+        .filter((item) => item.quantity > 0)
+    );
+  };
+
+  
+  const removeOrder = (id) => {
+    setOrderMessage("");
+
+    setOrders((previousOrders) =>
+      previousOrders.filter((item) => item.id !== id)
+    );
+  };
+
+ 
+  const totalItems = orders.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
+
+ 
+  const subtotal = orders.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+
+  
+  const deliveryFee = subtotal > 0 ? 150 : 0;
+
+
+  const total = subtotal + deliveryFee;
+
+  const placeOrder = () => {
+    if (orders.length === 0) {
+      setOrderMessage(
+        "."
+      );
       return;
     }
 
-    alert(`Tracking Order: ${orderId}`);
+    const orderDetails = orders
+      .map(
+        (item) =>
+          `${item.name} x ${item.quantity} = LKR ${
+            item.price * item.quantity
+          }`
+      )
+      .join("\n");
+
+    const confirmed = window.confirm(
+      `:\n\n${orderDetails}\n\n` +
+        ` LKR ${subtotal}\n` +
+        `: LKR ${deliveryFee}\n` +
+        ` LKR ${total}\n\n` +
+        ``   );
+
+    if (confirmed) {
+      setOrderMessage(
+        "!"
+      );
+
+      
+      setOrders([]);
+    }
   };
 
   return (
     <div className="delivery-page">
-
-      {/* HEADER */}
-      <header className="delivery-header">
-
+      {/* Navbar */}
+      <nav className="delivery-navbar">
         <a href="/" className="delivery-logo">
-          <span className="delivery-logo-icon">
-            <ShoppingBag size={20} />
-          </span>
-
+          <Leaf size={25} />
           FIT<span>LIFE</span>
         </a>
 
-        <a href="/" className="delivery-back">
-          <ArrowLeft size={17} />
-          Back to Home
-        </a>
+        <div className="delivery-nav-links">
+          <a href="/">Home</a>
+          <a href="/workouts">Workouts</a>
+          <a href="/nutrition">Nutrition</a>
+          <a href="/delivery" className="active">
+            Delivery
+          </a>
+        </div>
 
-      </header>
+        <div className="delivery-order-indicator">
+          <ShoppingBag size={20} />
+          <span>Order Items: {totalItems}</span>
+        </div>
+      </nav>
 
-
-      {/* HERO */}
-      <section className="delivery-hero">
-
+      {/* Hero Section */}
+      <header className="delivery-hero">
         <div className="delivery-hero-content">
-
-          <span className="section-label">
-            FITLIFE DELIVERY
+          <span className="delivery-tag">
+            <Leaf size={16} />
+            HEALTHY FOOD, HEALTHY LIFE
           </span>
 
           <h1>
-            Your Fitness.
+            Eat Better.
             <br />
-            <span>Delivered.</span>
+            <span>Live Stronger.</span>
           </h1>
 
           <p>
-            Order fitness equipment, accessories and
-            wellness products from FITLIFE Store and
-            get them delivered directly to your door.
+            Choose from a variety of healthy meals tailored to your fitness goals.
           </p>
 
+          <a
+            href="#food-menu"
+            className="delivery-hero-button"
+          >
+            Explore Menu
+            <ShoppingBag size={18} />
+          </a>
         </div>
 
-        <div className="delivery-truck">
-          <Truck size={110} strokeWidth={1.2} />
-        </div>
-
-      </section>
-
-
-      {/* DELIVERY FEATURES */}
-      <section className="delivery-features-grid">
-
-        <div className="delivery-feature-card">
-
-          <div className="delivery-feature-icon">
-            <Truck />
-          </div>
-
-          <h3>
-            Fast Delivery
-          </h3>
-
-          <p>
-            Get your fitness products delivered quickly
-            and safely.
-          </p>
-
-        </div>
-
-
-        <div className="delivery-feature-card">
-
-          <div className="delivery-feature-icon">
-            <MapPin />
-          </div>
-
-          <h3>
-            Doorstep Delivery
-          </h3>
-
-          <p>
-            We deliver your order directly to your
-            preferred address.
-          </p>
-
-        </div>
-
-
-        <div className="delivery-feature-card">
-
-          <div className="delivery-feature-icon">
-            <Package />
-          </div>
-
-          <h3>
-            Secure Packaging
-          </h3>
-
-          <p>
-            Your products are carefully packed before
-            delivery.
-          </p>
-
-        </div>
-
-      </section>
-
-
-      {/* TRACK ORDER */}
-      <section className="track-order">
-
-        <div className="track-heading">
-
-          <span className="section-label">
-            ORDER TRACKING
-          </span>
-
-          <h2>
-            Track Your <span>Order</span>
-          </h2>
-
-          <p>
-            Enter your order ID to check your delivery status.
-          </p>
-
-        </div>
-
-
-        <form
-          className="track-form"
-          onSubmit={handleTrack}
-        >
-
-          <input
-            type="text"
-            placeholder="Enter Order ID e.g. FL-2026-001"
-            value={orderId}
-            onChange={(e) => setOrderId(e.target.value)}
+        <div className="delivery-hero-image">
+          <img
+            src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=900"
+            alt="Healthy food"
           />
 
-          <button type="submit">
-            Track Order
-            <Truck size={17} />
+          <div className="delivery-image-badge">
+            <Leaf size={23} />
+            <div>
+              <strong>Eat Fresh</strong>
+              <small>Feel Your Best</small>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Section */}
+      <main className="delivery-main">
+        <section className="delivery-menu-section" id="food-menu">
+          <div className="delivery-section-heading">
+            <div>
+              <span className="delivery-tag">OUR MENU</span>
+              <h2>Healthy Food Store</h2>
+              <p></p>
+            </div>
+
+            <div className="delivery-search">
+              <Search size={20} />
+
+              <input
+                type="text"
+                placeholder="Search food..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+          </div>
+
+          {/* Category Buttons */}
+          <div className="delivery-categories">
+            {categories.map((item) => (
+              <button
+                key={item}
+                className={
+                  category === item
+                    ? "delivery-category selected"
+                    : "delivery-category"
+                }
+                onClick={() => setCategory(item)}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+
+          {/* Food Cards */}
+          <div className="delivery-food-grid">
+            {filteredItems.map((food) => (
+              <article
+                className="delivery-food-card"
+                key={food.id}
+              >
+                <div className="delivery-food-image">
+                  <img src={food.image} alt={food.name} />
+
+                  <span className="delivery-food-category">
+                    {food.category}
+                  </span>
+                </div>
+
+                <div className="delivery-food-info">
+                  <h3>{food.name}</h3>
+                  <p>{food.description}</p>
+
+                  <div className="delivery-food-bottom">
+                    <strong>
+                      LKR {food.price.toLocaleString("en-LK")}
+                    </strong>
+
+                    <button
+                      className="delivery-add-button"
+                      onClick={() => addToOrder(food)}
+                      aria-label={`Add ${food.name} to order`}
+                    >
+                      <Plus size={21} />
+                      <span>Add</span>
+                    </button>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          {filteredItems.length === 0 && (
+            <p className="delivery-empty">No food items available.</p>
+          )}
+        </section>
+
+        {/* Order Summary */}
+        <aside className="delivery-order-panel">
+          <div className="delivery-order-title">
+            <div>
+              <ShoppingBag size={23} />
+              <h2>Your Order</h2>
+            </div>
+
+            <span>{totalItems} items</span>
+          </div>
+
+          {orders.length === 0 ? (
+            <div className="delivery-order-empty">
+              <ShoppingBag size={45} />
+              <h3>No Orders Yet</h3>
+              <p>
+              </p>
+            </div>
+          ) : (
+            <div className="delivery-order-items">
+              {orders.map((item) => (
+                <div
+                  className="delivery-order-item"
+                  key={item.id}
+                >
+                  <img src={item.image} alt={item.name} />
+
+                  <div className="delivery-order-item-info">
+                    <h4>{item.name}</h4>
+
+                    <strong>
+                      LKR{" "}
+                      {(item.price * item.quantity).toLocaleString(
+                        "en-LK"
+                      )}
+                    </strong>
+
+                    <div className="delivery-quantity">
+                      <button
+                        onClick={() =>
+                          changeQuantity(item.id, -1)
+                        }
+                        aria-label="Decrease quantity"
+                      >
+                        <Minus size={14} />
+                      </button>
+
+                      <span>{item.quantity}</span>
+
+                      <button
+                        onClick={() =>
+                          changeQuantity(item.id, 1)
+                        }
+                        aria-label="Increase quantity"
+                      >
+                        <Plus size={14} />
+                      </button>
+                    </div>
+                  </div>
+
+                  <button
+                    className="delivery-remove"
+                    onClick={() => removeOrder(item.id)}
+                    aria-label={`Remove ${item.name}`}
+                  >
+                    <Trash2 size={17} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Price Summary */}
+          <div className="delivery-price-summary">
+            <div>
+              <span>Subtotal</span>
+              <strong>
+                LKR {subtotal.toLocaleString("en-LK")}
+              </strong>
+            </div>
+
+            <div>
+              <span>Delivery Fee</span>
+              <strong>
+                LKR {deliveryFee.toLocaleString("en-LK")}
+              </strong>
+            </div>
+
+            <div className="delivery-total">
+              <span>Total</span>
+              <strong>
+                LKR {total.toLocaleString("en-LK")}
+              </strong>
+            </div>
+          </div>
+
+          {/* Place Order */}
+          <button
+            className="delivery-checkout-button"
+            onClick={placeOrder}
+          >
+            <Truck size={20} />
+            Confirm Order
           </button>
 
-        </form>
-
-      </section>
-
-
-      {/* ORDER STATUS */}
-      <section className="delivery-status-section">
-
-        <div className="status-heading">
-
-          <span className="section-label">
-            DELIVERY STATUS
-          </span>
-
-          <h2>
-            How Your Order <span>Moves</span>
-          </h2>
-
-        </div>
-
-
-        <div className="delivery-timeline">
-
-          <div className="timeline-item completed">
-
-            <div className="timeline-icon">
-              <CheckCircle size={21} />
+          {orderMessage && (
+            <div className="delivery-order-message">
+              <CheckCircle size={18} />
+              <p>{orderMessage}</p>
             </div>
+          )}
 
-            <div>
-              <h3>
-                Order Confirmed
-              </h3>
+          <p className="delivery-secure-note">
+            Healthy choices for a better you.
+          </p>
+        </aside>
+      </main>
 
-              <p>
-                Your order has been successfully received.
-              </p>
-            </div>
-
-          </div>
-
-
-          <div className="timeline-line"></div>
-
-
-          <div className="timeline-item completed">
-
-            <div className="timeline-icon">
-              <Package size={21} />
-            </div>
-
-            <div>
-              <h3>
-                Preparing
-              </h3>
-
-              <p>
-                Your products are being packed and prepared.
-              </p>
-            </div>
-
-          </div>
-
-
-          <div className="timeline-line"></div>
-
-
-          <div className="timeline-item">
-
-            <div className="timeline-icon">
-              <Truck size={21} />
-            </div>
-
-            <div>
-              <h3>
-                Out for Delivery
-              </h3>
-
-              <p>
-                Your package is on its way to you.
-              </p>
-            </div>
-
-          </div>
-
-
-          <div className="timeline-line"></div>
-
-
-          <div className="timeline-item">
-
-            <div className="timeline-icon">
-              <MapPin size={21} />
-            </div>
-
-            <div>
-              <h3>
-                Delivered
-              </h3>
-
-              <p>
-                Your fitness products arrive at your doorstep.
-              </p>
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      {/* DELIVERY INFO */}
-      <section className="delivery-info">
-
-        <div>
-          <Clock size={25} />
-
-          <div>
-            <strong>
-              Delivery Time
-            </strong>
-
-            <span>
-              2–5 working days
-            </span>
-          </div>
-        </div>
-
-
-        <div>
-          <MapPin size={25} />
-
-          <div>
-            <strong>
-              Delivery Area
-            </strong>
-
-            <span>
-              Sri Lanka
-            </span>
-          </div>
-        </div>
-
-
-        <div>
-          <Package size={25} />
-
-          <div>
-            <strong>
-              Safe Delivery
-            </strong>
-
-            <span>
-              Securely packed products
-            </span>
-          </div>
-        </div>
-
-      </section>
-
-
-      {/* FOOTER */}
+      {/* Footer */}
       <footer className="delivery-footer">
-
-        <a href="/">
-          <ShoppingBag size={18} />
+        <a href="/" className="delivery-logo">
           FIT<span>LIFE</span>
         </a>
 
-        <p>
-          © 2026 FITLIFE. Your fitness. Your wellness. Your life.
-        </p>
-
+        <p>Fuel your body. Improve your life.</p>
+        <small>© 2026 FITLIFE. All rights reserved.</small>
       </footer>
-
     </div>
   );
 }
