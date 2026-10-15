@@ -1,352 +1,364 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import {
-  Camera,
-  CameraOff,
-  Play,
-  Square,
-  RotateCcw,
   Activity,
-  Flame,
-  Clock,
+  Camera,
   CheckCircle,
-  Dumbbell,
+  Clock,
+  Flame,
+  Play,
+  RotateCcw,
+  Square,
+  Target,
+  Video,
 } from "lucide-react";
 import "./AIFormCheck.css";
 
 function AIFormCheck() {
   const videoRef = useRef(null);
   const streamRef = useRef(null);
-  const timerRef = useRef(null);
 
-  const [exercise, setExercise] = useState("Squats");
-  const [cameraOn, setCameraOn] = useState(false);
-  const [running, setRunning] = useState(false);
-  const [seconds, setSeconds] = useState(0);
+  const [exercise, setExercise] = useState("Push Ups");
+  const [isCameraOn, setIsCameraOn] = useState(false);
+  const [isTraining, setIsTraining] = useState(false);
   const [reps, setReps] = useState(0);
+  const [seconds, setSeconds] = useState(0);
   const [formScore, setFormScore] = useState(0);
-  const [message, setMessage] = useState(
-    "Start your camera to begin your workout."
+  const [feedback, setFeedback] = useState(
+    "Start your workout to see your form feedback."
   );
-  const [error, setError] = useState("");
+  const [cameraError, setCameraError] = useState("");
 
-  const exercises = [
-    "Squats",
-    "Push Ups",
-    "Lunges",
-    "Jumping Jacks",
-    "Plank",
-  ];
-
+  // Workout timer
   useEffect(() => {
-    return () => {
-      clearInterval(timerRef.current);
+    if (!isTraining) return;
 
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach((track) => track.stop());
-      }
-    };
-  }, []);
+    const timer = setInterval(() => {
+      setSeconds((previous) => previous + 1);
+    }, 1000);
 
+    return () => clearInterval(timer);
+  }, [isTraining]);
+
+  // Start camera
   const startCamera = async () => {
-    setError("");
-
     try {
+      setCameraError("");
+
       if (!navigator.mediaDevices?.getUserMedia) {
-        throw new Error(
-          "Camera is unavailable. Use localhost or HTTPS."
-        );
+        throw new Error("Camera access requires HTTPS or localhost.");
       }
 
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "user" },
+        video: true,
         audio: false,
       });
 
       streamRef.current = stream;
+      setIsCameraOn(true);
 
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        await videoRef.current.play();
       }
-
-      setCameraOn(true);
-      setMessage("Camera connected. Ready to start!");
-    } catch (err) {
-      setError(
-        err.name === "NotAllowedError"
-          ? "Camera permission denied. Allow camera access in your browser."
-          : err.message || "Unable to access your camera."
+    } catch (error) {
+      setCameraError(
+        error.message ||
+          "Unable to access camera. Please check your camera permission."
       );
     }
   };
 
+  // Stop camera
   const stopCamera = () => {
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach((track) => track.stop());
-      streamRef.current = null;
-    }
-
-    if (videoRef.current) {
-      videoRef.current.srcObject = null;
-    }
-
-    setCameraOn(false);
-    stopWorkout();
-    setMessage("Camera stopped.");
+    streamRef.current?.getTracks().forEach((track) => track.stop());
+    streamRef.current = null;
+    setIsCameraOn(false);
   };
 
-  const startWorkout = () => {
-    if (!cameraOn) {
-      setError("Please start the camera first.");
-      return;
+  // Connect camera stream to video
+  useEffect(() => {
+    if (videoRef.current && streamRef.current) {
+      videoRef.current.srcObject = streamRef.current;
     }
+  }, [isCameraOn]);
 
-    setError("");
-    setRunning(true);
-    setMessage("Workout started! Follow the exercise instructions.");
+  // Clean up camera when leaving the page
+  useEffect(() => {
+    return () => {
+      streamRef.current?.getTracks().forEach((track) => track.stop());
+    };
+  }, []);
 
-    clearInterval(timerRef.current);
-
-    timerRef.current = setInterval(() => {
-      setSeconds((previous) => previous + 1);
-    }, 1000);
+  const startWorkout = () => {
+    setIsTraining(true);
+    setFeedback("Workout started! Keep your movements controlled.");
   };
 
   const stopWorkout = () => {
-    clearInterval(timerRef.current);
-    setRunning(false);
+    setIsTraining(false);
+    setFeedback("Workout paused. Review your form and continue when ready.");
   };
 
   const resetWorkout = () => {
-    stopWorkout();
-    setSeconds(0);
+    setIsTraining(false);
     setReps(0);
+    setSeconds(0);
     setFormScore(0);
-    setMessage("Workout reset. Ready to start again.");
-    setError("");
+    setFeedback("Ready! Start your workout when you are prepared.");
   };
 
-  const formatTime = (value) => {
-    const minutes = Math.floor(value / 60);
-    const remainingSeconds = value % 60;
+  // Demo controls for testing the interface.
+  // Replace these with real pose-detection results later.
+  const simulateRep = () => {
+    if (!isTraining) return;
+
+    setReps((previous) => previous + 1);
+    setFormScore(94);
+    setFeedback("Good job! Keep your back straight and move with control.");
+  };
+
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const remainingSeconds = time % 60;
 
     return `${String(minutes).padStart(2, "0")}:${String(
       remainingSeconds
     ).padStart(2, "0")}`;
   };
 
-  const calories = Math.round(seconds / 60 * 5);
+  const calories = Math.round(seconds / 60 * 6);
 
   return (
-    <div className="ai-check-page">
-      <header className="ai-header">
+    <main className="ai-form-page">
+      {/* Navbar */}
+      <nav className="ai-navbar">
         <a href="/" className="ai-logo">
-          <Activity size={27} />
-          <span>FIT<span>LIFE</span></span>
+          <Activity size={28} />
+          <span>FIT<span className="ai-accent">LIFE</span></span>
         </a>
 
-        <a href="/" className="ai-home-link">
-          Back to Home
-        </a>
-      </header>
+        <div className="ai-nav-links">
+          <a href="/">Home</a>
+          <a href="/wellness">Wellness</a>
+          <a href="/ai-form-check" className="active">
+            AI Form Check
+          </a>
+          <a href="/nutrition">Nutrition</a>
+          <a href="/progress">Progress</a>
+        </div>
+      </nav>
 
-      <main className="ai-main">
-        <section className="ai-heading">
-          <span className="ai-tag">
-            <Activity size={15} /> AI FITNESS TECHNOLOGY
-          </span>
+      {/* Page heading */}
+      <section className="ai-heading">
+        <span className="ai-eyebrow">
+          <Activity size={16} /> SMART FITNESS TECHNOLOGY
+        </span>
 
-          <h1>
-            AI Form <span>Check</span>
-          </h1>
+        <h1>
+          Perfect Your Form.
+          <br />
+          <span>Build Your Strength.</span>
+        </h1>
 
-          <p>
-            Train smarter, improve your posture, and build a
-            healthier lifestyle with FITLIFE.
-          </p>
-        </section>
+        <p>
+          Train smarter with your workout camera, session tracking,
+          and exercise guidance.
+        </p>
+      </section>
 
-        <section className="ai-workspace">
-          <div className="ai-camera-card">
-            <div className="ai-camera-top">
-              <div>
-                <h2>Live Workout Camera</h2>
-                <p>Position your full body in the camera frame.</p>
-              </div>
-
-              <span className={cameraOn ? "ai-status live" : "ai-status"}>
-                <span className="ai-status-dot" />
-                {cameraOn ? "Camera On" : "Camera Off"}
-              </span>
+      {/* Main dashboard */}
+      <section className="ai-dashboard">
+        <div className="ai-camera-card">
+          <div className="ai-card-heading">
+            <div>
+              <h2>Live Form Check</h2>
+              <p>Position your full body in the camera frame.</p>
             </div>
 
-            <div className="ai-video-container">
-              <video
-                ref={videoRef}
-                autoPlay
-                muted
-                playsInline
-                className={cameraOn ? "ai-video" : "ai-video hidden"}
-              />
-
-              {!cameraOn && (
-                <div className="ai-camera-placeholder">
-                  <div className="ai-camera-icon">
-                    <Camera size={40} />
-                  </div>
-                  <h3>Your workout starts here</h3>
-                  <p>Enable your camera to see yourself.</p>
-                </div>
-              )}
-
-              {cameraOn && (
-                <div className="ai-camera-overlay">
-                  <span className="ai-record-dot" />
-                  CAMERA ACTIVE
-                </div>
-              )}
-            </div>
-
-            {error && <p className="ai-error">{error}</p>}
-
-            <div className="ai-camera-actions">
-              {!cameraOn ? (
-                <button
-                  className="ai-btn ai-btn-primary"
-                  onClick={startCamera}
-                >
-                  <Camera size={18} /> Enable Camera
-                </button>
-              ) : (
-                <button
-                  className="ai-btn ai-btn-secondary"
-                  onClick={stopCamera}
-                >
-                  <CameraOff size={18} /> Stop Camera
-                </button>
-              )}
-
-              {!running ? (
-                <button
-                  className="ai-btn ai-btn-primary"
-                  onClick={startWorkout}
-                >
-                  <Play size={18} /> Start Workout
-                </button>
-              ) : (
-                <button
-                  className="ai-btn ai-btn-secondary"
-                  onClick={stopWorkout}
-                >
-                  <Square size={17} /> Finish Workout
-                </button>
-              )}
-
-              <button
-                className="ai-reset-btn"
-                onClick={resetWorkout}
-                aria-label="Reset workout"
-                title="Reset workout"
-              >
-                <RotateCcw size={19} />
-              </button>
-            </div>
-
-            <p className="ai-message">
-              <CheckCircle size={17} /> {message}
-            </p>
+            <span className={`ai-status ${isCameraOn ? "online" : ""}`}>
+              <span className="ai-status-dot" />
+              {isCameraOn ? "Camera On" : "Camera Off"}
+            </span>
           </div>
 
-          <aside className="ai-sidebar">
-            <div className="ai-panel">
-              <h2><Dumbbell size={20} /> Select Exercise</h2>
-
-              <div className="ai-exercise-list">
-                {exercises.map((item) => (
-                  <button
-                    key={item}
-                    className={
-                      exercise === item
-                        ? "ai-exercise selected"
-                        : "ai-exercise"
-                    }
-                    onClick={() => {
-                      setExercise(item);
-                      setMessage(`${item} selected. Ready to train.`);
-                    }}
-                  >
-                    <span>{item}</span>
-                    {exercise === item && (
-                      <CheckCircle size={18} />
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="ai-panel ai-stats-panel">
-              <h2><Activity size={20} /> Workout Statistics</h2>
-
-              <div className="ai-stat">
-                <span className="ai-stat-icon"><Dumbbell size={20} /></span>
-                <div>
-                  <p>Repetitions</p>
-                  <strong>{reps}</strong>
+          <div className="ai-video-container">
+            {isCameraOn ? (
+              <video
+                ref={videoRef}
+                className="ai-video"
+                autoPlay
+                playsInline
+                muted
+              />
+            ) : (
+              <div className="ai-camera-placeholder">
+                <div className="ai-camera-icon">
+                  <Camera size={42} />
                 </div>
+                <h3>Your Workout Camera</h3>
+                <p>Enable your camera to see your live video.</p>
+                <button
+                  className="ai-primary-button"
+                  onClick={startCamera}
+                >
+                  <Video size={18} /> Enable Camera
+                </button>
               </div>
+            )}
 
-              <div className="ai-stat">
-                <span className="ai-stat-icon"><CheckCircle size={20} /></span>
-                <div>
-                  <p>Form Score</p>
-                  <strong>{formScore}%</strong>
-                </div>
+            {isCameraOn && (
+              <div className="ai-camera-overlay">
+                <span><span className="ai-status-dot" /> LIVE</span>
+                <span>{exercise}</span>
               </div>
+            )}
+          </div>
 
-              <div className="ai-stat">
-                <span className="ai-stat-icon"><Clock size={20} /></span>
-                <div>
-                  <p>Duration</p>
-                  <strong>{formatTime(seconds)}</strong>
-                </div>
-              </div>
+          {cameraError && (
+            <p className="ai-error">{cameraError}</p>
+          )}
 
-              <div className="ai-stat">
-                <span className="ai-stat-icon"><Flame size={20} /></span>
-                <div>
-                  <p>Estimated Calories</p>
-                  <strong>{calories} kcal</strong>
-                </div>
-              </div>
-            </div>
+          <div className="ai-camera-actions">
+            {!isCameraOn ? (
+              <button
+                className="ai-primary-button"
+                onClick={startCamera}
+              >
+                <Camera size={18} /> Start Camera
+              </button>
+            ) : (
+              <button
+                className="ai-secondary-button"
+                onClick={stopCamera}
+              >
+                <Square size={16} /> Stop Camera
+              </button>
+            )}
 
-            <div className="ai-tip">
-              <h3>💡 Fitness Tip</h3>
+            <button
+              className="ai-secondary-button"
+              onClick={resetWorkout}
+            >
+              <RotateCcw size={16} /> Reset
+            </button>
+          </div>
+
+          <div className="ai-tip">
+            <Target size={21} />
+            <div>
+              <strong>Training tip</strong>
               <p>
-                {exercise === "Squats"
-                  ? "Keep your chest up and knees aligned with your toes."
-                  : exercise === "Push Ups"
-                  ? "Keep your body straight and your core engaged."
-                  : exercise === "Lunges"
-                  ? "Keep your balance and avoid letting your front knee collapse inward."
-                  : exercise === "Jumping Jacks"
-                  ? "Land softly and maintain a steady rhythm."
-                  : "Keep your body aligned and breathe normally."}
+                Keep your movements controlled and stop if you feel pain.
               </p>
             </div>
-          </aside>
-        </section>
+          </div>
+        </div>
 
-        <p className="ai-disclaimer">
-          Note: This starter version accesses your camera but does not
-          yet detect body posture or count real repetitions. AI-based
-          scoring requires pose-detection integration.
-        </p>
-      </main>
-    </div>
+        {/* Workout controls */}
+        <div className="ai-side-panel">
+          <div className="ai-panel-card">
+            <h2>Choose Exercise</h2>
+            <p className="ai-muted">Select your workout activity.</p>
+
+            <div className="ai-exercise-list">
+              {["Push Ups", "Squats", "Plank", "Jumping Jacks", "Lunges"].map(
+                (item) => (
+                  <button
+                    key={item}
+                    className={`ai-exercise-option ${
+                      exercise === item ? "selected" : ""
+                    }`}
+                    onClick={() => {
+                      setExercise(item);
+                      setFeedback(`Selected ${item}. Get ready to train.`);
+                    }}
+                  >
+                    <span className="ai-exercise-symbol">
+                      <Activity size={20} />
+                    </span>
+                    <span>{item}</span>
+                    {exercise === item && (
+                      <CheckCircle size={19} className="ai-check" />
+                    )}
+                  </button>
+                )
+              )}
+            </div>
+
+            <div className="ai-workout-buttons">
+              {!isTraining ? (
+                <button
+                  className="ai-primary-button ai-full-button"
+                  onClick={startWorkout}
+                >
+                  <Play size={18} fill="currentColor" /> Start Workout
+                </button>
+              ) : (
+                <button
+                  className="ai-secondary-button ai-full-button"
+                  onClick={stopWorkout}
+                >
+                  <Square size={16} /> Pause Workout
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="ai-panel-card">
+            <h2>Workout Statistics</h2>
+
+            <div className="ai-stats-grid">
+              <div className="ai-stat-box">
+                <Target size={22} />
+                <span>Repetitions</span>
+                <strong>{reps}</strong>
+              </div>
+
+              <div className="ai-stat-box">
+                <Clock size={22} />
+                <span>Duration</span>
+                <strong>{formatTime(seconds)}</strong>
+              </div>
+
+              <div className="ai-stat-box">
+                <Flame size={22} />
+                <span>Est. Calories</span>
+                <strong>{calories}</strong>
+              </div>
+
+              <div className="ai-stat-box">
+                <Activity size={22} />
+                <span>Form Score</span>
+                <strong>{formScore}%</strong>
+              </div>
+            </div>
+
+            <div className="ai-feedback">
+              <div className="ai-feedback-title">
+                <CheckCircle size={20} />
+                <strong>Workout Feedback</strong>
+              </div>
+              <p>{feedback}</p>
+            </div>
+
+            <button
+              className="ai-secondary-button ai-full-button"
+              onClick={simulateRep}
+              disabled={!isTraining}
+              title="Demo only: this button does not detect real repetitions"
+            >
+              + Add Demo Rep
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <footer className="ai-footer">
+        <Activity size={20} />
+        <span>FITLIFE — Train Smart. Live Strong.</span>
+      </footer>
+    </main>
   );
 }
 
 export default AIFormCheck;
-

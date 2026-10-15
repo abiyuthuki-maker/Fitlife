@@ -1,28 +1,15 @@
 
-import React, { useState } from "react";
-import {
-  ShoppingBag,
-  Plus,
-  Minus,
-  Trash2,
-  Truck,
-  Search,
-  Leaf,
-  CheckCircle,
-} from "lucide-react";
-
+import React, { useMemo, useState } from "react";
 import "./Delivery.css";
 
-
-const foodItems = [
+const products = [
   {
     id: 1,
     name: "Red Rice & Curry",
     category: "Meals",
     price: 450,
     image:
-      "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=600",
-    description: "",
+      "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: 2,
@@ -30,8 +17,7 @@ const foodItems = [
     category: "Breakfast",
     price: 350,
     image:
-      "https://images.unsplash.com/photo-1547592180-85f173990554?w=600",
-    description: "",
+      "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: 3,
@@ -39,8 +25,7 @@ const foodItems = [
     category: "Breakfast",
     price: 300,
     image:
-      "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=600",
-    description: "",
+      "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: 4,
@@ -48,8 +33,7 @@ const foodItems = [
     category: "Healthy",
     price: 200,
     image:
-      "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600",
-    description: "",
+      "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: 5,
@@ -57,8 +41,7 @@ const foodItems = [
     category: "Snacks",
     price: 180,
     image:
-      "https://images.unsplash.com/photo-1515543904379-3d757afe72e4?w=600",
-    description: "",
+      "https://images.unsplash.com/photo-1515543904379-3d757afe72e4?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: 6,
@@ -66,8 +49,7 @@ const foodItems = [
     category: "Breakfast",
     price: 250,
     image:
-      "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=600",
-    description: "",
+      "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: 7,
@@ -75,8 +57,7 @@ const foodItems = [
     category: "Meals",
     price: 500,
     image:
-      "https://images.unsplash.com/photo-1547592180-85f173990554?w=600",
-    description: "",
+      "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: 8,
@@ -84,242 +65,276 @@ const foodItems = [
     category: "Healthy",
     price: 300,
     image:
-      "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=600",
-    description: "",
+      "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: 9,
+    name: "Whey Protein",
+    category: "Supplements",
+    price: 8500,
+    image:
+      "https://images.unsplash.com/photo-1593095948071-474c5cc2989d?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: 10,
+    name: "Fitness Watch",
+    category: "Accessories",
+    price: 12000,
+    image:
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: 11,
+    name: "Dumbbells",
+    category: "Equipment",
+    price: 4500,
+    image:
+      "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: 12,
+    name: "Yoga Mat",
+    category: "Equipment",
+    price: 2500,
+    image:
+      "https://images.unsplash.com/photo-1603988363607-e1e4a66962c0?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: 13,
+    name: "Resistance Bands",
+    category: "Equipment",
+    price: 1800,
+    image:
+      "https://images.unsplash.com/photo-1598289431512-b97b0917affc?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: 14,
+    name: "Skipping Rope",
+    category: "Equipment",
+    price: 1200,
+    image:
+      "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: 15,
+    name: "Gym Gloves",
+    category: "Accessories",
+    price: 2200,
+    image:
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    id: 16,
+    name: "Shaker Bottle",
+    category: "Accessories",
+    price: 950,
+    image:
+      "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80",
   },
 ];
 
-function Delivery() {
-  
-  const [orders, setOrders] = useState([]);
+const categories = [
+  "All",
+  "Meals",
+  "Breakfast",
+  "Healthy",
+  "Snacks",
+  "Supplements",
+  "Equipment",
+  "Accessories",
+];
 
+function Delivery() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
+  const [orders, setOrders] = useState([]);
+  const [message, setMessage] = useState("");
+  const [customerName, setCustomerName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
 
- 
-  const [orderMessage, setOrderMessage] = useState("");
+  const money = (amount) =>
+    `LKR ${amount.toLocaleString("en-LK")}`;
 
-  const categories = [
-    "All",
-    "Meals",
-    "Breakfast",
-    "Healthy",
-    "Snacks",
-  ];
+  const filteredProducts = useMemo(() => {
+    const term = search.toLowerCase().trim();
 
- 
-  const filteredItems = foodItems.filter((food) => {
-    const matchesSearch = food.name
-      .toLowerCase()
-      .includes(search.toLowerCase());
+    return products.filter((product) => {
+      const matchesCategory =
+        category === "All" || product.category === category;
 
-    const matchesCategory =
-      category === "All" || food.category === category;
+      const matchesSearch =
+        product.name.toLowerCase().includes(term) ||
+        product.category.toLowerCase().includes(term);
 
-    return matchesSearch && matchesCategory;
-  });
+      return matchesCategory && matchesSearch;
+    });
+  }, [search, category]);
 
- 
-  const addToOrder = (food) => {
-    setOrderMessage("");
+  const addToOrder = (product) => {
+    setMessage("");
 
     setOrders((previousOrders) => {
       const existing = previousOrders.find(
-        (item) => item.id === food.id
+        (item) => item.id === product.id
       );
 
       if (existing) {
         return previousOrders.map((item) =>
-          item.id === food.id
+          item.id === product.id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       }
 
-      return [
-        ...previousOrders,
-        { ...food, quantity: 1 },
-      ];
+      return [...previousOrders, { ...product, quantity: 1 }];
     });
   };
 
-  
   const changeQuantity = (id, amount) => {
-    setOrderMessage("");
+    setMessage("");
 
     setOrders((previousOrders) =>
       previousOrders
         .map((item) =>
           item.id === id
-            ? {
-                ...item,
-                quantity: item.quantity + amount,
-              }
+            ? { ...item, quantity: item.quantity + amount }
             : item
         )
         .filter((item) => item.quantity > 0)
     );
   };
 
-  
-  const removeOrder = (id) => {
-    setOrderMessage("");
-
+  const removeItem = (id) => {
     setOrders((previousOrders) =>
       previousOrders.filter((item) => item.id !== id)
     );
   };
 
- 
-  const totalItems = orders.reduce(
-    (sum, item) => sum + item.quantity,
-    0
-  );
-
- 
   const subtotal = orders.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+    (total, item) => total + item.price * item.quantity,
     0
   );
 
-  
-  const deliveryFee = subtotal > 0 ? 150 : 0;
-
-
+  const deliveryFee = subtotal === 0 ? 0 : 300;
   const total = subtotal + deliveryFee;
 
-  const placeOrder = () => {
+  const confirmOrder = (event) => {
+    event.preventDefault();
+
     if (orders.length === 0) {
-      setOrderMessage(
-        "."
-      );
+      setMessage("Please add products to your order first.");
       return;
     }
 
-    const orderDetails = orders
-      .map(
-        (item) =>
-          `${item.name} x ${item.quantity} = LKR ${
-            item.price * item.quantity
-          }`
-      )
-      .join("\n");
-
-    const confirmed = window.confirm(
-      `:\n\n${orderDetails}\n\n` +
-        ` LKR ${subtotal}\n` +
-        `: LKR ${deliveryFee}\n` +
-        ` LKR ${total}\n\n` +
-        ``   );
-
-    if (confirmed) {
-      setOrderMessage(
-        "!"
-      );
-
-      
-      setOrders([]);
+    if (
+      !customerName.trim() ||
+      !phone.trim() ||
+      !address.trim()
+    ) {
+      setMessage("Please enter your name, phone number and address.");
+      return;
     }
+
+    const orderDetails = {
+      customerName,
+      phone,
+      address,
+      items: orders.map(({ id, name, price, quantity }) => ({
+        id,
+        name,
+        price,
+        quantity,
+      })),
+      subtotal,
+      deliveryFee,
+      total,
+      createdAt: new Date().toISOString(),
+    };
+
+    // Demo only: this does not send the order to a backend.
+    console.log("FITLIFE Order:", orderDetails);
+
+    setMessage(
+      "Order details are ready! This is a demo; no backend is connected."
+    );
   };
 
   return (
     <div className="delivery-page">
-      {/* Navbar */}
+      {/* NAVBAR */}
       <nav className="delivery-navbar">
         <a href="/" className="delivery-logo">
-          <Leaf size={25} />
           FIT<span>LIFE</span>
         </a>
 
         <div className="delivery-nav-links">
           <a href="/">Home</a>
-          <a href="/workouts">Workouts</a>
-          <a href="/nutrition">Nutrition</a>
-          <a href="/delivery" className="active">
-            Delivery
-          </a>
-        </div>
-
-        <div className="delivery-order-indicator">
-          <ShoppingBag size={20} />
-          <span>Order Items: {totalItems}</span>
+          <a href="/profile">Profile</a>
         </div>
       </nav>
 
-      {/* Hero Section */}
+      {/* HERO */}
       <header className="delivery-hero">
         <div className="delivery-hero-content">
-          <span className="delivery-tag">
-            <Leaf size={16} />
-            HEALTHY FOOD, HEALTHY LIFE
-          </span>
+          <p className="delivery-eyebrow">
+            YOUR HEALTH, OUR MISSION
+          </p>
 
           <h1>
-            Eat Better.
+            Healthy Living
             <br />
-            <span>Live Stronger.</span>
+            <span>Delivered to You</span>
           </h1>
 
           <p>
-            Choose from a variety of healthy meals tailored to your fitness goals.
+            Shop healthy Sri Lankan food and fitness essentials.
           </p>
 
-          <a
-            href="#food-menu"
-            className="delivery-hero-button"
-          >
-            Explore Menu
-            <ShoppingBag size={18} />
+          <a href="#delivery-products" className="shop-button">
+            Shop Now →
           </a>
-        </div>
-
-        <div className="delivery-hero-image">
-          <img
-            src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=900"
-            alt="Healthy food"
-          />
-
-          <div className="delivery-image-badge">
-            <Leaf size={23} />
-            <div>
-              <strong>Eat Fresh</strong>
-              <small>Feel Your Best</small>
-            </div>
-          </div>
         </div>
       </header>
 
-      {/* Main Section */}
+      {/* PRODUCTS */}
       <main className="delivery-main">
-        <section className="delivery-menu-section" id="food-menu">
-          <div className="delivery-section-heading">
+        <section
+          className="delivery-section"
+          id="delivery-products"
+        >
+          <div className="section-heading">
             <div>
-              <span className="delivery-tag">OUR MENU</span>
-              <h2>Healthy Food Store</h2>
-              <p></p>
+              <p className="delivery-eyebrow">FITLIFE STORE</p>
+              <h2>Food & Fitness Products</h2>
             </div>
 
-            <div className="delivery-search">
-              <Search size={20} />
-
-              <input
-                type="text"
-                placeholder="Search food..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
+            <span className="product-count">
+              {filteredProducts.length} Products
+            </span>
           </div>
 
-          {/* Category Buttons */}
-          <div className="delivery-categories">
+          {/* SEARCH */}
+          <div className="delivery-search">
+            <span aria-hidden="true">⌕</span>
+
+            <input
+              type="search"
+              placeholder="Search food or fitness products..."
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+            />
+          </div>
+
+          {/* CATEGORY FILTER */}
+          <div className="category-list">
             {categories.map((item) => (
               <button
                 key={item}
                 className={
                   category === item
-                    ? "delivery-category selected"
-                    : "delivery-category"
+                    ? "category-button active"
+                    : "category-button"
                 }
                 onClick={() => setCategory(item)}
               >
@@ -328,37 +343,45 @@ function Delivery() {
             ))}
           </div>
 
-          {/* Food Cards */}
-          <div className="delivery-food-grid">
-            {filteredItems.map((food) => (
-              <article
-                className="delivery-food-card"
-                key={food.id}
-              >
-                <div className="delivery-food-image">
-                  <img src={food.image} alt={food.name} />
+          {/* PRODUCT GRID */}
+          <div className="products-grid">
+            {filteredProducts.map((product) => (
+              <article className="product-card" key={product.id}>
+                <div className="product-image-container">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="product-image"
+                    loading="lazy"
+                    onError={(event) => {
+                      event.currentTarget.onerror = null;
+                      event.currentTarget.src =
+                        "https://placehold.co/600x400/101d16/a7f23d?text=FITLIFE";
+                    }}
+                  />
 
-                  <span className="delivery-food-category">
-                    {food.category}
+                  <span className="product-category">
+                    {product.category}
                   </span>
                 </div>
 
-                <div className="delivery-food-info">
-                  <h3>{food.name}</h3>
-                  <p>{food.description}</p>
+                <div className="product-info">
+                  <h3>{product.name}</h3>
 
-                  <div className="delivery-food-bottom">
-                    <strong>
-                      LKR {food.price.toLocaleString("en-LK")}
+                  <p className="product-english-name">
+                    {product.category}
+                  </p>
+
+                  <div className="product-bottom">
+                    <strong className="product-price">
+                      {money(product.price)}
                     </strong>
 
                     <button
-                      className="delivery-add-button"
-                      onClick={() => addToOrder(food)}
-                      aria-label={`Add ${food.name} to order`}
+                      className="add-button"
+                      onClick={() => addToOrder(product)}
                     >
-                      <Plus size={21} />
-                      <span>Add</span>
+                      + Add
                     </button>
                   </div>
                 </div>
@@ -366,137 +389,175 @@ function Delivery() {
             ))}
           </div>
 
-          {filteredItems.length === 0 && (
-            <p className="delivery-empty">No food items available.</p>
+          {filteredProducts.length === 0 && (
+            <div className="empty-products">
+              No products found. Try another search.
+            </div>
           )}
         </section>
 
-        {/* Order Summary */}
-        <aside className="delivery-order-panel">
-          <div className="delivery-order-title">
+        {/* ORDER SUMMARY */}
+        <section className="order-section" id="my-order">
+          <div className="order-heading">
             <div>
-              <ShoppingBag size={23} />
+              <p className="delivery-eyebrow">YOUR SELECTION</p>
               <h2>Your Order</h2>
             </div>
 
-            <span>{totalItems} items</span>
+            <span className="order-count">
+              {orders.reduce(
+                (count, item) => count + item.quantity,
+                0
+              )}{" "}
+              items
+            </span>
           </div>
 
           {orders.length === 0 ? (
-            <div className="delivery-order-empty">
-              <ShoppingBag size={45} />
-              <h3>No Orders Yet</h3>
+            <div className="empty-order">
+              <div className="empty-order-icon">🛒</div>
+              <h3>Your order is empty</h3>
               <p>
+                Add food or fitness products to get started.
               </p>
             </div>
           ) : (
-            <div className="delivery-order-items">
+            <div className="order-items">
               {orders.map((item) => (
-                <div
-                  className="delivery-order-item"
-                  key={item.id}
-                >
-                  <img src={item.image} alt={item.name} />
+                <div className="order-item" key={item.id}>
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="order-item-image"
+                    onError={(event) => {
+                      event.currentTarget.onerror = null;
+                      event.currentTarget.src =
+                        "https://placehold.co/100x100/101d16/a7f23d?text=FIT";
+                    }}
+                  />
 
-                  <div className="delivery-order-item-info">
+                  <div className="order-item-details">
                     <h4>{item.name}</h4>
+                    <p>{money(item.price)}</p>
 
-                    <strong>
-                      LKR{" "}
-                      {(item.price * item.quantity).toLocaleString(
-                        "en-LK"
-                      )}
-                    </strong>
-
-                    <div className="delivery-quantity">
+                    <div className="quantity-controls">
                       <button
-                        onClick={() =>
-                          changeQuantity(item.id, -1)
-                        }
                         aria-label="Decrease quantity"
+                        onClick={() => changeQuantity(item.id, -1)}
                       >
-                        <Minus size={14} />
+                        −
                       </button>
 
                       <span>{item.quantity}</span>
 
                       <button
-                        onClick={() =>
-                          changeQuantity(item.id, 1)
-                        }
                         aria-label="Increase quantity"
+                        onClick={() => changeQuantity(item.id, 1)}
                       >
-                        <Plus size={14} />
+                        +
                       </button>
                     </div>
                   </div>
 
-                  <button
-                    className="delivery-remove"
-                    onClick={() => removeOrder(item.id)}
-                    aria-label={`Remove ${item.name}`}
-                  >
-                    <Trash2 size={17} />
-                  </button>
+                  <div className="order-item-end">
+                    <strong>
+                      {money(item.price * item.quantity)}
+                    </strong>
+
+                    <button
+                      className="remove-button"
+                      onClick={() => removeItem(item.id)}
+                    >
+                      Remove
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
           )}
 
-          {/* Price Summary */}
-          <div className="delivery-price-summary">
+          {/* TOTALS */}
+          <div className="order-totals">
             <div>
               <span>Subtotal</span>
-              <strong>
-                LKR {subtotal.toLocaleString("en-LK")}
-              </strong>
+              <strong>{money(subtotal)}</strong>
             </div>
 
             <div>
-              <span>Delivery Fee</span>
-              <strong>
-                LKR {deliveryFee.toLocaleString("en-LK")}
-              </strong>
+              <span>Delivery fee</span>
+              <strong>{money(deliveryFee)}</strong>
             </div>
 
-            <div className="delivery-total">
+            <div className="grand-total">
               <span>Total</span>
-              <strong>
-                LKR {total.toLocaleString("en-LK")}
-              </strong>
+              <strong>{money(total)}</strong>
             </div>
           </div>
 
-          {/* Place Order */}
-          <button
-            className="delivery-checkout-button"
-            onClick={placeOrder}
-          >
-            <Truck size={20} />
-            Confirm Order
-          </button>
+          {/* CUSTOMER DETAILS */}
+          <form className="customer-form" onSubmit={confirmOrder}>
+            <h3>Delivery Details</h3>
 
-          {orderMessage && (
-            <div className="delivery-order-message">
-              <CheckCircle size={18} />
-              <p>{orderMessage}</p>
-            </div>
-          )}
+            <label htmlFor="customerName">Full name</label>
+            <input
+              id="customerName"
+              type="text"
+              value={customerName}
+              onChange={(event) => setCustomerName(event.target.value)}
+              placeholder="Enter your name"
+              required
+            />
 
-          <p className="delivery-secure-note">
-            Healthy choices for a better you.
-          </p>
-        </aside>
+            <label htmlFor="customerPhone">Phone number</label>
+            <input
+              id="customerPhone"
+              type="tel"
+              value={phone}
+              onChange={(event) => setPhone(event.target.value)}
+              placeholder="+94..."
+              required
+            />
+
+            <label htmlFor="customerAddress">Delivery address</label>
+            <textarea
+              id="customerAddress"
+              value={address}
+              onChange={(event) => setAddress(event.target.value)}
+              placeholder="Enter your delivery address"
+              rows="3"
+              required
+            />
+
+            {message && (
+              <p className="order-message" role="status">
+                {message}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              className="checkout-button"
+              disabled={orders.length === 0}
+            >
+              Confirm Order →
+            </button>
+
+            <p className="demo-note">
+              Demo only: connect a backend/API to receive real orders.
+            </p>
+          </form>
+        </section>
       </main>
 
-      {/* Footer */}
+      {/* FOOTER */}
       <footer className="delivery-footer">
         <a href="/" className="delivery-logo">
           FIT<span>LIFE</span>
         </a>
 
-        <p>Fuel your body. Improve your life.</p>
-        <small>© 2026 FITLIFE. All rights reserved.</small>
+        <p>Choose a healthier lifestyle with FITLIFE.</p>
+
+        <small>© {new Date().getFullYear()} FITLIFE</small>
       </footer>
     </div>
   );

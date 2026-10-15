@@ -1,4 +1,7 @@
+
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import {
   Dumbbell,
   HeartPulse,
@@ -10,8 +13,26 @@ import {
   ArrowRight,
 } from "lucide-react";
 
+import "./Wellness.css";
+
 function Wellness() {
   const [activeTab, setActiveTab] = useState("All");
+
+  // Navigate to the fitness video page
+  const navigate = useNavigate();
+
+  const openFitnessVideo = (item) => {
+    navigate("/fitness-video", {
+      state: {
+        title: item.title,
+        category: item.category,
+        level: item.level,
+        duration: item.duration,
+        info: item.info,
+        image: item.image,
+      },
+    });
+  };
 
   const activities = [
     {
@@ -100,7 +121,6 @@ function Wellness() {
 
       {/* HEADER */}
       <header className="wellness-header">
-
         <a href="/" className="logo">
           <span className="logo-icon">
             <Dumbbell size={20} />
@@ -110,7 +130,6 @@ function Wellness() {
         </a>
 
         <div className="wellness-title">
-
           <span>FITLIFE WELLNESS</span>
 
           <h1>
@@ -123,44 +142,33 @@ function Wellness() {
             Workouts, Yoga, Meditation and Music —
             everything you need for a healthier lifestyle.
           </p>
-
         </div>
-
       </header>
-
 
       {/* CATEGORY MENU */}
       <section className="wellness-menu">
 
         <button
-          className={
-            activeTab === "Workouts" ? "active" : ""
-          }
+          className={activeTab === "Workouts" ? "active" : ""}
           onClick={() => setActiveTab("Workouts")}
         >
           <Dumbbell />
-
           <div>
             <strong>Workouts</strong>
             <small>Build Strength</small>
           </div>
         </button>
 
-
         <button
-          className={
-            activeTab === "Yoga" ? "active" : ""
-          }
+          className={activeTab === "Yoga" ? "active" : ""}
           onClick={() => setActiveTab("Yoga")}
         >
           <HeartPulse />
-
           <div>
             <strong>Yoga</strong>
             <small>Flexibility & Balance</small>
           </div>
         </button>
-
 
         <button
           className={
@@ -169,22 +177,17 @@ function Wellness() {
           onClick={() => setActiveTab("Meditation")}
         >
           <Brain />
-
           <div>
             <strong>Meditation</strong>
             <small>Calm Your Mind</small>
           </div>
         </button>
 
-
         <button
-          className={
-            activeTab === "Music" ? "active" : ""
-          }
+          className={activeTab === "Music" ? "active" : ""}
           onClick={() => setActiveTab("Music")}
         >
           <Music />
-
           <div>
             <strong>Music</strong>
             <small>Stay Motivated</small>
@@ -193,10 +196,8 @@ function Wellness() {
 
       </section>
 
-
       {/* FILTER */}
       <div className="wellness-filter">
-
         {[
           "All",
           "Workouts",
@@ -204,55 +205,40 @@ function Wellness() {
           "Meditation",
           "Music",
         ].map((tab) => (
-
           <button
             key={tab}
-            className={
-              activeTab === tab ? "active" : ""
-            }
+            className={activeTab === tab ? "active" : ""}
             onClick={() => setActiveTab(tab)}
           >
             {tab}
           </button>
-
         ))}
-
       </div>
-
 
       {/* ACTIVITY CARDS */}
       <section className="wellness-grid">
-
-        {filteredActivities.map((item, index) => (
-
-          <div
-            className="wellness-card"
-            key={index}
-          >
+        {filteredActivities.map((item) => (
+          <div className="wellness-card" key={item.title}>
 
             <div className="wellness-card-image">
-
-              <img
-                src={item.image}
-                alt={item.title}
-              />
+              <img src={item.image} alt={item.title} />
 
               <span className="wellness-category">
                 {item.category}
               </span>
 
-              <button className="wellness-play">
-                <Play
-                  size={18}
-                  fill="currentColor"
-                />
+              {/* PLAY BUTTON */}
+              <button
+                type="button"
+                className="wellness-play"
+                onClick={() => openFitnessVideo(item)}
+                aria-label={`Play ${item.title}`}
+              >
+                <Play size={18} fill="currentColor" />
               </button>
-
             </div>
 
-
             <div className="wellness-card-content">
-
               <span className="wellness-level">
                 {item.level}
               </span>
@@ -260,7 +246,6 @@ function Wellness() {
               <h2>{item.title}</h2>
 
               <div className="wellness-info">
-
                 <span>
                   <Clock size={15} />
                   {item.duration}
@@ -270,43 +255,32 @@ function Wellness() {
                   <Flame size={15} />
                   {item.info}
                 </span>
-
               </div>
 
-
-              <button className="start-button">
-
+              {/* START NOW BUTTON */}
+              <button
+                type="button"
+                className="start-button"
+                onClick={() => openFitnessVideo(item)}
+              >
                 Start Now
-
                 <ArrowRight size={16} />
-
               </button>
-
             </div>
 
           </div>
-
         ))}
-
       </section>
-
 
       {/* BACK HOME */}
       <div className="wellness-bottom">
-
         <a href="/" className="secondary-button">
-
           <ArrowRight
             size={17}
-            style={{
-              transform: "rotate(180deg)",
-            }}
+            style={{ transform: "rotate(180deg)" }}
           />
-
           Back to Home
-
         </a>
-
       </div>
 
     </div>

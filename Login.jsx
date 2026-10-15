@@ -1,142 +1,125 @@
 
-import React, { useState } from "react";
+import React from "react";
 
-import { Link, useNavigate } from "react-router-dom";
-import {
-  Dumbbell,
-  Mail,
-  Lock,
-  Eye,
-  EyeOff,
-  ArrowRight,
-  UserRound,
-} from "lucide-react";
-
-export default function Login() {
-  const navigate = useNavigate();
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setError("");
-    setSuccess("");
-
-    if (!email.trim() || !password) {
-      setError("Please enter your email and password.");
-      return;
-    }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError("Please enter a valid email address.");
-      return;
-    }
-
-    // Demo only: no server authentication is connected.
-    setSuccess("Login form submitted successfully!");
-
-    // Connect your backend authentication here.
-  };
-
+function Login() {
   return (
-    <main className="login-page">
-      <div className="login-container">
-        <Link to="/" className="login-brand">
-          <span className="login-brand-icon">
-            <Dumbbell size={23} />
-          </span>
-          FIT<span>LIFE</span>
-        </Link>
+    <div style={styles.page}>
+      <div style={styles.card}>
+        {/* One Fitness Image Only */}
+        <img
+          src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900&auto=format&fit=crop"
+          alt="Fitness Gym"
+          style={styles.image}
+        />
 
-        <section className="login-card">
-          <div className="login-icon">
-            <UserRound size={28} />
-          </div>
+        <h1 style={styles.title}>
+          FIT<span style={{ color: "#a7f23d" }}>LIFE</span>
+        </h1>
 
-          <p className="login-eyebrow">WELCOME BACK</p>
+        <p style={styles.subtitle}>
+          Welcome Back! Start Your Fitness Journey.
+        </p>
 
-          <h1>
-            Login to <span>FITLIFE</span>
-          </h1>
+        <form style={styles.form}>
+          <input
+            type="email"
+            placeholder="Email Address"
+            required
+            style={styles.input}
+          />
 
-          <p className="login-description">
-            Continue your fitness journey and build a healthier lifestyle.
-          </p>
+          <input
+            type="password"
+            placeholder="Password"
+            required
+            style={styles.input}
+          />
 
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="login-email">Email Address</label>
+          <button type="submit" style={styles.button}>
+            Login
+          </button>
+        </form>
 
-            <div className="login-input-wrap">
-              <Mail size={18} />
-              <input
-                id="login-email"
-                type="email"
-                placeholder="you@example.com"
-                autoComplete="email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                required
-              />
-            </div>
-
-            <label htmlFor="login-password">Password</label>
-
-            <div className="login-input-wrap">
-              <Lock size={18} />
-              <input
-                id="login-password"
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
-                autoComplete="current-password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                required
-              />
-
-              <button
-                type="button"
-                className="login-eye"
-                onClick={() => setShowPassword((value) => !value)}
-                aria-label={showPassword ? "Hide password" : "Show password"}
-              >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
-            </div>
-
-            {error && (
-              <p className="login-message login-error" role="alert">
-                {error}
-              </p>
-            )}
-
-            {success && (
-              <p className="login-message login-success" role="status">
-                {success}
-              </p>
-            )}
-
-            <button className="login-submit" type="submit">
-              Login <ArrowRight size={18} />
-            </button>
-          </form>
-
-          <div className="login-divider">
-            <span>YOUR FITNESS JOURNEY STARTS HERE</span>
-          </div>
-
-          <Link to="/" className="login-home-link">
-            ← Back to Home
-          </Link>
-        </section>
-
-        <p className="login-footer">
-          © 2026 FITLIFE · Your fitness. Your wellness. Your life.
+        <p style={styles.footer}>
+          Your Fitness. Your Future.
         </p>
       </div>
-    </main>
+    </div>
   );
 }
+
+const styles = {
+  page: {
+    minHeight: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#07110d",
+    padding: "20px",
+    fontFamily: "Arial, sans-serif",
+  },
+
+  card: {
+    width: "100%",
+    maxWidth: "380px",
+    padding: "25px",
+    backgroundColor: "#101c16",
+    borderRadius: "20px",
+    textAlign: "center",
+    boxShadow: "0 10px 35px rgba(0,0,0,0.4)",
+  },
+
+  image: {
+    width: "100%",
+    height: "190px",
+    objectFit: "cover",
+    borderRadius: "14px",
+  },
+
+  title: {
+    color: "#ffffff",
+    fontSize: "32px",
+    marginBottom: "10px",
+  },
+
+  subtitle: {
+    color: "#b8c4bb",
+    fontSize: "14px",
+    marginBottom: "25px",
+  },
+
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "15px",
+  },
+
+  input: {
+    padding: "14px",
+    borderRadius: "10px",
+    border: "1px solid #34453a",
+    backgroundColor: "#19271f",
+    color: "#ffffff",
+    fontSize: "15px",
+    outline: "none",
+  },
+
+  button: {
+    padding: "14px",
+    backgroundColor: "#a7f23d",
+    color: "#07110d",
+    fontSize: "16px",
+    fontWeight: "bold",
+    border: "none",
+    borderRadius: "10px",
+    cursor: "pointer",
+  },
+
+  footer: {
+    color: "#a7f23d",
+    marginTop: "22px",
+    fontSize: "13px",
+  },
+};
+
+export default Login;

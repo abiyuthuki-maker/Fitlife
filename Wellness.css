@@ -1,0 +1,290 @@
+
+.wellness-page {
+  min-height: 100vh;
+  padding: 30px 6%;
+  background: #07110d;
+  color: #f5f7f4;
+  font-family: Arial, sans-serif;
+}
+
+.wellness-header {
+  padding: 20px 0 35px;
+}
+
+.wellness-page .logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #a7f23d;
+  font-size: 23px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.wellness-page .logo span:last-child {
+  color: white;
+}
+
+.logo-icon {
+  display: flex;
+}
+
+.wellness-title {
+  padding-top: 35px;
+}
+
+.wellness-title > span {
+  color: #a7f23d;
+  letter-spacing: 2px;
+  font-size: 12px;
+}
+
+.wellness-title h1 {
+  font-size: clamp(32px, 5vw, 52px);
+  line-height: 1.2;
+}
+
+.wellness-title h1 strong {
+  color: #a7f23d;
+}
+
+.wellness-title p {
+  color: #a8b5aa;
+  line-height: 1.7;
+  max-width: 600px;
+}
+
+.wellness-menu {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.wellness-menu button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px;
+  text-align: left;
+  background: #101b14;
+  color: white;
+  border: 1px solid #27392b;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.wellness-menu button svg {
+  color: #a7f23d;
+  flex-shrink: 0;
+}
+
+.wellness-menu button div {
+  display: grid;
+  gap: 6px;
+}
+
+.wellness-menu button small {
+  color: #a8b5aa;
+  font-size: 11px;
+}
+
+.wellness-menu button.active,
+.wellness-menu button:hover {
+  border-color: #a7f23d;
+  background: #17251b;
+}
+
+.wellness-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.wellness-filter button {
+  padding: 10px 18px;
+  border: 1px solid #344437;
+  border-radius: 25px;
+  background: transparent;
+  color: #c8d2c9;
+  cursor: pointer;
+}
+
+.wellness-filter button.active,
+.wellness-filter button:hover {
+  background: #a7f23d;
+  border-color: #a7f23d;
+  color: #07110d;
+}
+
+.wellness-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.wellness-card {
+  min-width: 0;
+  overflow: hidden;
+  background: #101b14;
+  border: 1px solid #26372a;
+  border-radius: 15px;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.wellness-card:hover {
+  transform: translateY(-4px);
+  border-color: #a7f23d;
+}
+
+.wellness-card-image {
+  height: 210px;
+  position: relative;
+  overflow: hidden;
+}
+
+.wellness-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s;
+}
+
+.wellness-card:hover .wellness-card-image img {
+  transform: scale(1.04);
+}
+
+.wellness-category {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 7px 11px;
+  background: #07110d;
+  color: #a7f23d;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.wellness-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  background: #a7f23d;
+  color: #07110d;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.wellness-play:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.wellness-card-content {
+  padding: 20px;
+}
+
+.wellness-level {
+  color: #a7f23d;
+  font-size: 12px;
+}
+
+.wellness-card-content h2 {
+  font-size: 20px;
+  margin: 12px 0 18px;
+}
+
+.wellness-info {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  color: #b9c5ba;
+  font-size: 13px;
+}
+
+.wellness-info span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.wellness-info svg {
+  color: #a7f23d;
+}
+
+.start-button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 22px;
+  padding: 13px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #a7f23d;
+  color: #07110d;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.start-button:hover {
+  background: #bbff61;
+}
+
+.wellness-bottom {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0 15px;
+}
+
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border: 1px solid #344437;
+  border-radius: 8px;
+  color: white;
+  text-decoration: none;
+}
+
+.secondary-button:hover {
+  color: #a7f23d;
+  border-color: #a7f23d;
+}
+
+@media (max-width: 1000px) {
+  .wellness-menu {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .wellness-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .wellness-page {
+    padding: 20px 5%;
+  }
+
+  .wellness-menu,
+  .wellness-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wellness-card-image {
+    height: 230px;
+  }
+}

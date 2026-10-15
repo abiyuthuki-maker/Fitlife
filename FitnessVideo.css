@@ -1,0 +1,260 @@
+
+.fitness-video-page {
+  min-height: 100vh;
+  background: #07110d;
+  color: #f5f7f4;
+  padding: 0 6%;
+  font-family: Arial, sans-serif;
+}
+
+.fitness-video-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 0;
+  border-bottom: 1px solid #26352b;
+}
+
+.fitness-video-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #a7f23d;
+  text-decoration: none;
+  font-size: 23px;
+  font-weight: bold;
+}
+
+.fitness-video-logo span {
+  color: white;
+}
+
+.fitness-back-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ddd;
+  text-decoration: none;
+}
+
+.fitness-video-heading {
+  padding: 35px 0;
+}
+
+.fitness-video-heading h1 {
+  font-size: clamp(28px, 4vw, 44px);
+}
+
+.fitness-video-heading h1 span {
+  color: #a7f23d;
+}
+
+.fitness-video-heading p,
+.fitness-video-details p {
+  color: #a8b5aa;
+  line-height: 1.7;
+}
+
+.fitness-eyebrow {
+  color: #a7f23d;
+  letter-spacing: 2px;
+}
+
+.fitness-video-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 25px;
+  align-items: start;
+  padding-bottom: 40px;
+}
+
+.fitness-player {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 15px;
+  background: #101b14;
+}
+
+.fitness-player iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.fitness-video-details {
+  padding: 20px 0;
+}
+
+.fitness-level-badge {
+  background: #1b3020;
+  color: #a7f23d;
+  padding: 7px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.fitness-video-stats {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.fitness-video-stats span {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.fitness-video-stats svg {
+  color: #a7f23d;
+}
+
+.fitness-exercise-panel,
+.fitness-workout-sidebar {
+  background: #101b14;
+  border: 1px solid #27392b;
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.fitness-section-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.fitness-section-title > span {
+  color: #a7f23d;
+  font-size: 12px;
+}
+
+.fitness-exercise-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.fitness-exercise-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px;
+  background: #17251b;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.fitness-exercise-item input {
+  accent-color: #a7f23d;
+}
+
+.fitness-exercise-item span {
+  flex: 1;
+}
+
+.fitness-exercise-item svg,
+.fitness-success-message {
+  color: #a7f23d;
+}
+
+.fitness-sidebar-description {
+  color: #a8b5aa;
+  font-size: 13px;
+}
+
+.fitness-workout-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 10px;
+  text-align: left;
+  color: white;
+  background: #17251b;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.fitness-workout-option:hover,
+.fitness-workout-option.selected {
+  border-color: #a7f23d;
+}
+
+.fitness-workout-option img {
+  width: 65px;
+  height: 65px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.fitness-option-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fitness-option-content strong {
+  font-size: 13px;
+}
+
+.fitness-option-content small {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #a8b5aa;
+}
+
+.fitness-option-play {
+  color: #a7f23d;
+}
+
+.fitness-tip {
+  margin-top: 20px;
+  padding: 15px;
+  border-left: 3px solid #a7f23d;
+  background: #1b2d20;
+  border-radius: 8px;
+}
+
+.fitness-tip strong {
+  color: #a7f23d;
+}
+
+.fitness-tip p {
+  color: #c3cec4;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.fitness-video-footer {
+  border-top: 1px solid #26352b;
+  text-align: center;
+  padding: 25px 0;
+  color: #849286;
+}
+
+@media (max-width: 800px) {
+  .fitness-video-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 500px) {
+  .fitness-video-page {
+    padding: 0 4%;
+  }
+
+  .fitness-video-navbar {
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .fitness-video-heading h1 {
+    font-size: 29px;
+  }
+}
