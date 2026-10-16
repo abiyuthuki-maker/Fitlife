@@ -992,3 +992,615 @@ input:focus-visible {
 
 
 
+/*Delivery.css*/
+
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+.delivery-page {
+  --green: #a7f23d;
+  --dark: #07110d;
+  --panel: #101b15;
+  --muted: #9ba89f;
+  min-height: 100vh;
+  background: var(--dark);
+  color: #f5f7f5;
+  font-family: "Inter", sans-serif;
+}
+
+.delivery-page * {
+  box-sizing: border-box;
+}
+
+.delivery-page a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.delivery-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 6%;
+  gap: 24px;
+  border-bottom: 1px solid #ffffff12;
+}
+
+.delivery-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 25px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.delivery-logo > span:last-child {
+  color: var(--green);
+}
+
+.delivery-logo-icon {
+  color: var(--green);
+}
+
+.delivery-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.delivery-nav-links a:hover,
+.delivery-nav-links a.active {
+  color: var(--green);
+}
+
+.delivery-cart-indicator {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 17px;
+  border: 1px solid #ffffff20;
+  border-radius: 12px;
+  font-size: 13px;
+}
+
+.delivery-cart-indicator svg {
+  color: var(--green);
+}
+
+.delivery-hero {
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  align-items: center;
+  gap: 50px;
+  padding: 65px 7% 75px;
+}
+
+.delivery-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.3px;
+}
+
+.delivery-hero h1 {
+  margin: 23px 0;
+  font-size: clamp(42px, 5vw, 70px);
+  line-height: 1.08;
+  letter-spacing: -3px;
+}
+
+.delivery-hero h1 span {
+  color: var(--green);
+}
+
+.delivery-hero-content > p {
+  max-width: 480px;
+  color: var(--muted);
+  line-height: 1.9;
+  font-size: 15px;
+}
+
+.delivery-hero-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 15px 23px;
+  background: var(--green);
+  color: #10180b !important;
+  border-radius: 10px;
+  font-weight: 700;
+  transition: 0.25s;
+}
+
+.delivery-hero-button svg {
+  transform: rotate(180deg);
+}
+
+.delivery-hero-button:hover {
+  transform: translateY(-3px);
+}
+
+.delivery-hero-image {
+  position: relative;
+}
+
+.delivery-hero-image > img {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  border-radius: 25px;
+}
+
+.delivery-image-badge {
+  position: absolute;
+  left: -20px;
+  bottom: 22px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 20px;
+  background: #15221a;
+  border: 1px solid #ffffff16;
+  border-radius: 14px;
+}
+
+.delivery-image-badge svg {
+  color: var(--green);
+}
+
+.delivery-image-badge strong,
+.delivery-image-badge small {
+  display: block;
+}
+
+.delivery-image-badge small {
+  margin-top: 5px;
+  color: var(--muted);
+}
+
+.delivery-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 35px;
+  padding: 25px 6% 80px;
+  align-items: start;
+}
+
+.delivery-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.delivery-section-heading h2 {
+  margin: 12px 0 8px;
+  font-size: 30px;
+}
+
+.delivery-section-heading p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.delivery-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 220px;
+  padding: 12px;
+  border: 1px solid #ffffff20;
+  border-radius: 10px;
+  color: var(--muted);
+}
+
+.delivery-search input {
+  width: 100%;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+}
+
+.delivery-search input::placeholder {
+  color: #78877d;
+}
+
+.delivery-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 28px 0;
+}
+
+.delivery-category {
+  padding: 10px 17px;
+  background: #111d15;
+  border: 1px solid #ffffff16;
+  color: #bac4bc;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.delivery-category:hover,
+.delivery-category.selected {
+  background: var(--green);
+  color: #10180b;
+  border-color: var(--green);
+}
+
+.delivery-food-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.delivery-food-card {
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid #ffffff10;
+  border-radius: 17px;
+  transition: transform 0.25s, border-color 0.25s;
+}
+
+.delivery-food-card:hover {
+  transform: translateY(-5px);
+  border-color: #a7f23d70;
+}
+
+.delivery-food-image {
+  position: relative;
+  height: 175px;
+  overflow: hidden;
+}
+
+.delivery-food-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.delivery-food-card:hover .delivery-food-image img {
+  transform: scale(1.05);
+}
+
+.delivery-food-category {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 7px 10px;
+  background: var(--green);
+  color: #10180b;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.delivery-food-info {
+  padding: 17px;
+}
+
+.delivery-food-info h3 {
+  margin: 0 0 9px;
+  font-size: 17px;
+}
+
+.delivery-food-info p {
+  min-height: 38px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.delivery-food-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 18px;
+}
+
+.delivery-food-bottom strong {
+  color: var(--green);
+  font-size: 18px;
+}
+
+.delivery-add-button {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  background: var(--green);
+  color: #10180b;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.delivery-add-button:hover {
+  transform: scale(1.08);
+}
+
+.delivery-empty {
+  padding: 30px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.delivery-cart-panel {
+  position: sticky;
+  top: 20px;
+  padding: 22px;
+  background: var(--panel);
+  border: 1px solid #ffffff15;
+  border-radius: 18px;
+}
+
+.delivery-cart-title,
+.delivery-cart-title > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.delivery-cart-title > div {
+  justify-content: flex-start;
+}
+
+.delivery-cart-title svg {
+  color: var(--green);
+}
+
+.delivery-cart-title h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.delivery-cart-title > span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.delivery-cart-empty {
+  padding: 40px 10px;
+  text-align: center;
+  border-bottom: 1px solid #ffffff15;
+}
+
+.delivery-cart-empty svg {
+  color: #56675b;
+}
+
+.delivery-cart-empty h3 {
+  font-size: 16px;
+}
+
+.delivery-cart-empty p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.delivery-cart-items {
+  margin-top: 20px;
+}
+
+.delivery-cart-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid #ffffff12;
+}
+
+.delivery-cart-item > img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.delivery-cart-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.delivery-cart-item-info h4 {
+  margin: 0 0 7px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.delivery-cart-item-info > strong {
+  color: var(--green);
+  font-size: 12px;
+}
+
+.delivery-quantity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.delivery-quantity button {
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  background: #203025;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delivery-quantity span {
+  font-size: 12px;
+}
+
+.delivery-remove {
+  padding: 5px;
+  background: transparent;
+  color: #f08080;
+  border: none;
+  cursor: pointer;
+}
+
+.delivery-price-summary {
+  margin-top: 20px;
+}
+
+.delivery-price-summary > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 17px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.delivery-price-summary strong {
+  color: white;
+}
+
+.delivery-price-summary .delivery-total {
+  padding-top: 18px;
+  border-top: 1px solid #ffffff20;
+  color: white;
+  font-size: 16px;
+}
+
+.delivery-price-summary .delivery-total strong {
+  color: var(--green);
+  font-size: 19px;
+}
+
+.delivery-checkout-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 15px;
+  background: var(--green);
+  color: #10180b;
+  border: none;
+  border-radius: 10px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.delivery-checkout-button:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+}
+
+.delivery-secure-note {
+  margin: 15px 0 0;
+  color: var(--muted);
+  text-align: center;
+  font-size: 11px;
+}
+
+.delivery-footer {
+  padding: 35px 20px;
+  border-top: 1px solid #ffffff12;
+  text-align: center;
+}
+
+.delivery-footer .delivery-logo {
+  justify-content: center;
+}
+
+.delivery-footer p,
+.delivery-footer small {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+@media (max-width: 1050px) {
+  .delivery-main {
+    grid-template-columns: minmax(0, 1fr) 300px;
+    padding-inline: 4%;
+    gap: 22px;
+  }
+
+  .delivery-hero {
+    padding-inline: 5%;
+  }
+
+  .delivery-nav-links {
+    gap: 15px;
+  }
+}
+
+@media (max-width: 760px) {
+  .delivery-navbar {
+    flex-wrap: wrap;
+    padding: 18px 5%;
+  }
+
+  .delivery-nav-links {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .delivery-hero {
+    grid-template-columns: 1fr;
+    padding-top: 45px;
+    gap: 35px;
+  }
+
+  .delivery-hero-image > img {
+    height: 280px;
+  }
+
+  .delivery-main {
+    grid-template-columns: 1fr;
+  }
+
+  .delivery-cart-panel {
+    position: static;
+  }
+}
+
+@media (max-width: 480px) {
+  .delivery-food-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .delivery-section-heading h2 {
+    font-size: 25px;
+  }
+
+  .delivery-search {
+    width: 100%;
+  }
+
+  .delivery-hero h1 {
+    font-size: 45px;
+    letter-spacing: -2px;
+  }
+
+  .delivery-image-badge {
+    left: 10px;
+  }
+}

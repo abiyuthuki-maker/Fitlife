@@ -10,9 +10,13 @@ import {
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Wellness from "./pages/Wellness";
+import FitnessVideo from "./pages/FitnessVideo";
+
 import Nutrition from "./pages/Nutrition";
 import Progress from "./pages/Progress";
 import GetStarted from "./pages/GetStarted";
+import AIFormCheck from "./pages/AIFormCheck";
+import Delivery from "./pages/Delivery";
 
 
 
@@ -30,7 +34,9 @@ function App() {
        <Route path="/nutrition" element={<Nutrition />} />
        <Route path="/progress" element={<Progress />} />
        <Route path="/" element={<GetStarted />} />
-     
+       <Route path="/ai-form-check" element={<AIFormCheck />} />
+       <Route path="/delivery" element={<Delivery />} />
+         <Route path="/fitness-video" element={<FitnessVideo />} />
 
         <Route
           path="*"
