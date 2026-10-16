@@ -40,7 +40,7 @@ function Home() {
           </a>
 
 
-          <a href="#ai-form-check">
+          <a href="/ai-form-check">
   AI Form Check
 </a>
 
