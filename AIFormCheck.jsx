@@ -103,12 +103,16 @@ export default function AIFormCheck() {
     const now = Date.now();
 
     if (
-      !force &&
-      (message === lastFeedbackRef.current ||
-        now - lastSpeechRef.current < 3500)
-    ) {
-      return;
-    }
+  !force &&
+  lastFeedbackRef.current &&
+  (
+    message === lastFeedbackRef.current ||
+    message.includes(lastFeedbackRef.current)
+  ) &&
+  now - lastSpeechRef.current < 3500
+) {
+  return;
+}
 
     lastSpeechRef.current = now;
     lastFeedbackRef.current = message;

@@ -54,7 +54,7 @@ function Home() {
 
          
 
-          <a href="delivery">
+          <a href="/delivery">
   Delivery
 </a>
 
