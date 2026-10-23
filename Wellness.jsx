@@ -1,6 +1,10 @@
 
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import {
+  Link,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 
 import {
   Dumbbell,
@@ -17,9 +21,35 @@ import "./Wellness.css";
 
 function Wellness() {
   const [activeTab, setActiveTab] = useState("All");
+  const [authChecked, setAuthChecked] = useState(false);
 
-  // Navigate to the fitness video page
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Read the token using the supported storage keys.
+  const getToken = () => {
+    return (
+      localStorage.getItem("fitlife-token") ||
+      localStorage.getItem("token") ||
+      localStorage.getItem("fitlifeToken") ||
+      localStorage.getItem("fitlife_token")
+    );
+  };
+
+  // Prevent access when no login token exists.
+  useEffect(() => {
+    const token = getToken();
+
+    if (!token) {
+      navigate("/login", {
+        replace: true,
+        state: { from: location },
+      });
+      return;
+    }
+
+    setAuthChecked(true);
+  }, [navigate, location]);
 
   const openFitnessVideo = (item) => {
     navigate("/fitness-video", {
@@ -116,18 +146,21 @@ function Wellness() {
           (item) => item.category === activeTab
         );
 
+  // Do not display the page before checking the token.
+  if (!authChecked) {
+    return null;
+  }
+
   return (
     <div className="wellness-page">
-
       {/* HEADER */}
       <header className="wellness-header">
-        <a href="/" className="logo">
+        <Link to="/" className="logo">
           <span className="logo-icon">
             <Dumbbell size={20} />
           </span>
-
           FIT<span>LIFE</span>
-        </a>
+        </Link>
 
         <div className="wellness-title">
           <span>FITLIFE WELLNESS</span>
@@ -147,8 +180,8 @@ function Wellness() {
 
       {/* CATEGORY MENU */}
       <section className="wellness-menu">
-
         <button
+          type="button"
           className={activeTab === "Workouts" ? "active" : ""}
           onClick={() => setActiveTab("Workouts")}
         >
@@ -160,20 +193,20 @@ function Wellness() {
         </button>
 
         <button
+          type="button"
           className={activeTab === "Yoga" ? "active" : ""}
           onClick={() => setActiveTab("Yoga")}
         >
           <HeartPulse />
           <div>
             <strong>Yoga</strong>
-            <small>Flexibility & Balance</small>
+            <small>Flexibility &amp; Balance</small>
           </div>
         </button>
 
         <button
-          className={
-            activeTab === "Meditation" ? "active" : ""
-          }
+          type="button"
+          className={activeTab === "Meditation" ? "active" : ""}
           onClick={() => setActiveTab("Meditation")}
         >
           <Brain />
@@ -184,6 +217,7 @@ function Wellness() {
         </button>
 
         <button
+          type="button"
           className={activeTab === "Music" ? "active" : ""}
           onClick={() => setActiveTab("Music")}
         >
@@ -193,33 +227,28 @@ function Wellness() {
             <small>Stay Motivated</small>
           </div>
         </button>
-
       </section>
 
       {/* FILTER */}
       <div className="wellness-filter">
-        {[
-          "All",
-          "Workouts",
-          "Yoga",
-          "Meditation",
-          "Music",
-        ].map((tab) => (
-          <button
-            key={tab}
-            className={activeTab === tab ? "active" : ""}
-            onClick={() => setActiveTab(tab)}
-          >
-            {tab}
-          </button>
-        ))}
+        {["All", "Workouts", "Yoga", "Meditation", "Music"].map(
+          (tab) => (
+            <button
+              type="button"
+              key={tab}
+              className={activeTab === tab ? "active" : ""}
+              onClick={() => setActiveTab(tab)}
+            >
+              {tab}
+            </button>
+          )
+        )}
       </div>
 
       {/* ACTIVITY CARDS */}
       <section className="wellness-grid">
         {filteredActivities.map((item) => (
           <div className="wellness-card" key={item.title}>
-
             <div className="wellness-card-image">
               <img src={item.image} alt={item.title} />
 
@@ -227,7 +256,6 @@ function Wellness() {
                 {item.category}
               </span>
 
-              {/* PLAY BUTTON */}
               <button
                 type="button"
                 className="wellness-play"
@@ -257,7 +285,6 @@ function Wellness() {
                 </span>
               </div>
 
-              {/* START NOW BUTTON */}
               <button
                 type="button"
                 className="start-button"
@@ -267,22 +294,20 @@ function Wellness() {
                 <ArrowRight size={16} />
               </button>
             </div>
-
           </div>
         ))}
       </section>
 
       {/* BACK HOME */}
       <div className="wellness-bottom">
-        <a href="/" className="secondary-button">
+        <Link to="/" className="secondary-button">
           <ArrowRight
             size={17}
             style={{ transform: "rotate(180deg)" }}
           />
           Back to Home
-        </a>
+        </Link>
       </div>
-
     </div>
   );
 }

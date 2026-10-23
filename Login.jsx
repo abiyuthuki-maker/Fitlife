@@ -1,67 +1,92 @@
 
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  
-const handleLogin = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-  setMessage("");
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage("");
 
-  try {
-    const response = await fetch(
-      "http://localhost:5000/api/auth/login",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email.trim(),
-          password,
-        }),
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            email: email.trim(),
+            password,
+          }),
+        }
+      );
+
+      const contentType =
+        response.headers.get("content-type") || "";
+
+      if (!contentType.includes("application/json")) {
+        throw new Error(
+          "Backend returned HTML instead of JSON. Check your API URL and backend routes."
+        );
       }
-    );
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (!response.ok) {
-  throw new Error(data.message || "Login failed");
-}
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
+      }
 
-if (!data.token) {
-  throw new Error("JWT token was not returned");
-}
+      if (!data.token) {
+        throw new Error(
+          "Login succeeded, but the backend did not return a JWT token."
+        );
+      }
 
-localStorage.setItem("fitlife-token", data.token);
+      // Save the JWT token.
+      localStorage.setItem("fitlife-token", data.token);
 
-if (data.user) {
-  localStorage.setItem(
-    "fitlife-user",
-    JSON.stringify(data.user)
-  );
-}
+      if (data.user) {
+        localStorage.setItem(
+          "fitlife-user",
+          JSON.stringify(data.user)
+        );
+      }
 
-navigate("/wellness");
-  } catch (error) {
-    setMessage(
-      error.message === "Failed to fetch"
-        ? "Backend connection failed."
-        : error.message
-    );
-  } finally {
-    setLoading(false);
-  }
-};
+      // Open the requested page, or Wellness by default.
+      const requestedPath = location.state?.from?.pathname;
+
+      const destination =
+        requestedPath &&
+        requestedPath.startsWith("/") &&
+        !requestedPath.startsWith("//") &&
+        requestedPath !== "/login"
+          ? requestedPath
+          : "/wellness";
+
+      navigate(destination, { replace: true });
+    } catch (error) {
+      console.error("Login error:", error);
+
+      setMessage(
+        error.message === "Failed to fetch"
+          ? "Cannot connect to backend. Make sure your server is running on port 5000."
+          : error.message
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div style={styles.page}>
@@ -103,18 +128,18 @@ navigate("/wellness");
 
           <button
             type="submit"
+            disabled={loading}
             style={{
               ...styles.button,
               opacity: loading ? 0.7 : 1,
             }}
-            disabled={loading}
           >
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
         {message && (
-          <p role="status" style={styles.message}>
+          <p role="alert" style={styles.message}>
             {message}
           </p>
         )}
@@ -146,6 +171,7 @@ const styles = {
     borderRadius: "20px",
     textAlign: "center",
     boxShadow: "0 10px 35px rgba(0,0,0,0.4)",
+    boxSizing: "border-box",
   },
 
   image: {
@@ -181,6 +207,8 @@ const styles = {
     color: "#ffffff",
     fontSize: "15px",
     outline: "none",
+    boxSizing: "border-box",
+    width: "100%",
   },
 
   button: {
@@ -195,7 +223,7 @@ const styles = {
   },
 
   message: {
-    color: "#a7f23d",
+    color: "#ff8585",
     fontSize: "13px",
     marginTop: "15px",
     overflowWrap: "anywhere",
