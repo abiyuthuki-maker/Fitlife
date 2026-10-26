@@ -1,239 +1,137 @@
 
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import {
+  HeartPulse,
+  ArrowLeft,
+  Eye,
+  EyeOff,
+} from "lucide-react";
+import "./Login.css";
 
 function Login() {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    setLoading(true);
-    setMessage("");
 
-    try {
-      const response = await fetch(
-        "http://localhost:5000/api/auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            email: email.trim(),
-            password,
-          }),
-        }
-      );
-
-      const contentType =
-        response.headers.get("content-type") || "";
-
-      if (!contentType.includes("application/json")) {
-        throw new Error(
-          "Backend returned HTML instead of JSON. Check your API URL and backend routes."
-        );
-      }
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Login failed");
-      }
-
-      if (!data.token) {
-        throw new Error(
-          "Login succeeded, but the backend did not return a JWT token."
-        );
-      }
-
-      // Save the JWT token.
-      localStorage.setItem("fitlife-token", data.token);
-
-      if (data.user) {
-        localStorage.setItem(
-          "fitlife-user",
-          JSON.stringify(data.user)
-        );
-      }
-
-      // Open the requested page, or Wellness by default.
-      const requestedPath = location.state?.from?.pathname;
-
-      const destination =
-        requestedPath &&
-        requestedPath.startsWith("/") &&
-        !requestedPath.startsWith("//") &&
-        requestedPath !== "/login"
-          ? requestedPath
-          : "/wellness";
-
-      navigate(destination, { replace: true });
-    } catch (error) {
-      console.error("Login error:", error);
-
-      setMessage(
-        error.message === "Failed to fetch"
-          ? "Cannot connect to backend. Make sure your server is running on port 5000."
-          : error.message
-      );
-    } finally {
-      setLoading(false);
+    if (email.trim() && password) {
+      alert("Demo login successful!");
+      navigate("/wellness");
     }
   };
 
   return (
-    <div style={styles.page}>
-      <div style={styles.card}>
-        <img
-          src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900&auto=format&fit=crop"
-          alt="Fitness Gym"
-          style={styles.image}
-        />
+    <div className="login-page">
+      <div className="login-card">
 
-        <h1 style={styles.title}>
-          FIT<span style={{ color: "#a7f23d" }}>LIFE</span>
-        </h1>
-
-        <p style={styles.subtitle}>
-          Welcome Back! Start Your Fitness Journey.
-        </p>
-
-        <form style={styles.form} onSubmit={handleLogin}>
-          <input
-            type="email"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            autoComplete="email"
-            required
-            style={styles.input}
+        {/* Fitness Image */}
+        <div className="login-image-section">
+          <img
+            className="login-image"
+            src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1200&q=85"
+            alt="Modern gym and fitness equipment"
           />
 
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="current-password"
-            required
-            style={styles.input}
-          />
+          <div className="login-image-overlay">
+            <div className="login-brand">
+              <HeartPulse size={30} />
+              <span>FITLIFE</span>
+            </div>
 
+            <div className="login-image-text">
+              <span className="login-badge">
+                YOUR FITNESS JOURNEY
+              </span>
+
+              <h2>
+                Train Smarter.
+                <br />
+                <span>Live Stronger.</span>
+              </h2>
+
+              <p>
+                Build healthy habits, improve your fitness,
+                and become a stronger version of yourself.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Login Form */}
+        <div className="login-form-section">
           <button
-            type="submit"
-            disabled={loading}
-            style={{
-              ...styles.button,
-              opacity: loading ? 0.7 : 1,
-            }}
+            type="button"
+            className="login-back-button"
+            onClick={() => navigate("/")}
           >
-            {loading ? "Logging in..." : "Login"}
+            <ArrowLeft size={17} />
+            Back to Home
           </button>
-        </form>
 
-        {message && (
-          <p role="alert" style={styles.message}>
-            {message}
+          <div className="login-mobile-logo">
+            <HeartPulse size={28} />
+            <span>FITLIFE</span>
+          </div>
+
+          <div className="login-heading">
+            <h1>Welcome Back!</h1>
+            <p>Login to continue your fitness journey.</p>
+          </div>
+
+          <form onSubmit={handleLogin}>
+            <label htmlFor="email">Email Address</label>
+
+            <input
+              id="email"
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
+              required
+            />
+
+            <label htmlFor="password">Password</label>
+
+            <div className="login-password-wrapper">
+              <input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
+                required
+              />
+
+              <button
+                type="button"
+                className="login-eye-button"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeOff size={19} /> : <Eye size={19} />}
+              </button>
+            </div>
+
+            <button type="submit" className="login-submit-button">
+              Login to FITLIFE
+            </button>
+          </form>
+
+          <p className="login-bottom-text">
+            Your fitness. Your wellness. Your life.
           </p>
-        )}
+        </div>
 
-        <p style={styles.footer}>
-          Your Fitness. Your Future.
-        </p>
       </div>
     </div>
   );
 }
-
-const styles = {
-  page: {
-    minHeight: "100vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#07110d",
-    padding: "20px",
-    fontFamily: "Arial, sans-serif",
-  },
-
-  card: {
-    width: "100%",
-    maxWidth: "380px",
-    padding: "25px",
-    backgroundColor: "#101c16",
-    borderRadius: "20px",
-    textAlign: "center",
-    boxShadow: "0 10px 35px rgba(0,0,0,0.4)",
-    boxSizing: "border-box",
-  },
-
-  image: {
-    width: "100%",
-    height: "190px",
-    objectFit: "cover",
-    borderRadius: "14px",
-  },
-
-  title: {
-    color: "#ffffff",
-    fontSize: "32px",
-    marginBottom: "10px",
-  },
-
-  subtitle: {
-    color: "#b8c4bb",
-    fontSize: "14px",
-    marginBottom: "25px",
-  },
-
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "15px",
-  },
-
-  input: {
-    padding: "14px",
-    borderRadius: "10px",
-    border: "1px solid #34453a",
-    backgroundColor: "#19271f",
-    color: "#ffffff",
-    fontSize: "15px",
-    outline: "none",
-    boxSizing: "border-box",
-    width: "100%",
-  },
-
-  button: {
-    padding: "14px",
-    backgroundColor: "#a7f23d",
-    color: "#07110d",
-    fontSize: "16px",
-    fontWeight: "bold",
-    border: "none",
-    borderRadius: "10px",
-    cursor: "pointer",
-  },
-
-  message: {
-    color: "#ff8585",
-    fontSize: "13px",
-    marginTop: "15px",
-    overflowWrap: "anywhere",
-  },
-
-  footer: {
-    color: "#a7f23d",
-    marginTop: "22px",
-    fontSize: "13px",
-  },
-};
 
 export default Login;
