@@ -1,135 +1,136 @@
 
 import React, { useMemo, useState } from "react";
 import "./Delivery.css";
+import productImage from "../images/images.jpeg";
+import fitnessProductImage from "../images/fitness-product.jpg";
+import fitnessProductImage2 from "../images/fitness-product-2.jpeg";
+import fitnessProductImage3 from "../images/fitness-product-3.jpeg";
+import fitnessProductImage10 from "../images/fitness-product-10.jpeg";
+import fitnessProductImage4 from "../images/fitness-product-4.jpeg";
+import fishRiceRecipe from "../images/fish-rice-recipe.jpg";
+import fitnessProductImage5 from "../images/fitness-product-5.jpeg";
+import fitnessProductImage11 from "../images/fitness-product-11.jpeg";
+import fitnessProductImage12 from "../images/fitness-product-12.jpeg";
+import fitnessProductImage13 from "../images/fitness-product-13.jpeg";
+import fitnessProductImage6 from "../images/fitness-product-6.jpeg";
+import fitnessProductImage7 from "../images/fitness-product-7.jpeg";
+import fitnessProductImage9 from "../images/fitness-product-9.jpeg";
+import fitnessProductImage8 from "../images/fitness-product-8.jpeg";
 
+import fitnessProductImage14 from "../images/fitness-product-14.jpeg";
 const products = [
   {
     id: 1,
     name: "Red Rice & Curry",
     category: "Meals",
-    price: 450,
-    image:
-      "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+    price: 650,
+    image: productImage,
   },
   {
     id: 2,
     name: "String Hoppers & Dhal",
     category: "Breakfast",
     price: 350,
-    image:
-      "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80",
+    image: fitnessProductImage,
   },
   {
     id: 3,
     name: "Kiribath",
     category: "Breakfast",
     price: 300,
-    image:
-      "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+     image: fitnessProductImage2,
   },
   {
     id: 4,
     name: "Gotukola Mallung",
     category: "Healthy",
     price: 200,
-    image:
-      "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80",
+   image: fitnessProductImage3,
   },
   {
     id: 5,
     name: "Boiled Kadala",
     category: "Snacks",
     price: 180,
-    image:
-      "https://images.unsplash.com/photo-1515543904379-3d757afe72e4?auto=format&fit=crop&w=800&q=80",
+   image: fitnessProductImage4,
   },
   {
     id: 6,
     name: "Egg Hoppers",
     category: "Breakfast",
     price: 250,
-    image:
-      "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=800&q=80",
+   image: fitnessProductImage10,
   },
   {
     id: 7,
     name: "Fish Curry & Rice",
     category: "Meals",
     price: 500,
-    image:
-      "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80",
+   image: fishRiceRecipe,
   },
   {
     id: 8,
     name: "Fresh Fruit Bowl",
     category: "Healthy",
     price: 300,
-    image:
-      "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=800&q=80",
+    image: fitnessProductImage5,
   },
   {
     id: 9,
     name: "Whey Protein",
     category: "Supplements",
     price: 8500,
-    image:
-      "https://images.unsplash.com/photo-1593095948071-474c5cc2989d?auto=format&fit=crop&w=800&q=80",
+   image: fitnessProductImage11,
   },
   {
     id: 10,
     name: "Fitness Watch",
     category: "Accessories",
-    price: 12000,
-    image:
-      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80",
+    price: 25700,
+    image: fitnessProductImage12,
   },
   {
     id: 11,
     name: "Dumbbells",
     category: "Equipment",
     price: 4500,
-    image:
-      "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=800&q=80",
+   image: fitnessProductImage13,
   },
   {
     id: 12,
     name: "Yoga Mat",
     category: "Equipment",
     price: 2500,
-    image:
-      "https://images.unsplash.com/photo-1603988363607-e1e4a66962c0?auto=format&fit=crop&w=800&q=80",
+    image: fitnessProductImage6,
   },
   {
     id: 13,
     name: "Resistance Bands",
     category: "Equipment",
     price: 1800,
-    image:
-      "https://images.unsplash.com/photo-1598289431512-b97b0917affc?auto=format&fit=crop&w=800&q=80",
+    image: fitnessProductImage7,
+
   },
   {
     id: 14,
     name: "Skipping Rope",
     category: "Equipment",
     price: 1200,
-    image:
-      "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=800&q=80",
+    image: fitnessProductImage8,
   },
   {
     id: 15,
     name: "Gym Gloves",
     category: "Accessories",
     price: 2200,
-    image:
-      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80",
+    image: fitnessProductImage9,
   },
   {
     id: 16,
     name: "Shaker Bottle",
     category: "Accessories",
     price: 950,
-    image:
-      "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80",
+    image: fitnessProductImage14,
   },
 ];
 
@@ -149,6 +150,8 @@ function Delivery() {
   const [category, setCategory] = useState("All");
   const [orders, setOrders] = useState([]);
   const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [customerName, setCustomerName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
@@ -156,6 +159,7 @@ function Delivery() {
   const money = (amount) =>
     `LKR ${amount.toLocaleString("en-LK")}`;
 
+  // Search products and filter by category
   const filteredProducts = useMemo(() => {
     const term = search.toLowerCase().trim();
 
@@ -171,6 +175,7 @@ function Delivery() {
     });
   }, [search, category]);
 
+  // Add a product to the cart
   const addToOrder = (product) => {
     setMessage("");
 
@@ -191,6 +196,7 @@ function Delivery() {
     });
   };
 
+  // Increase or decrease product quantity
   const changeQuantity = (id, amount) => {
     setMessage("");
 
@@ -205,12 +211,16 @@ function Delivery() {
     );
   };
 
+  // Remove a product from the cart
   const removeItem = (id) => {
+    setMessage("");
+
     setOrders((previousOrders) =>
       previousOrders.filter((item) => item.id !== id)
     );
   };
 
+  // Calculate order totals
   const subtotal = orders.reduce(
     (total, item) => total + item.price * item.quantity,
     0
@@ -219,8 +229,10 @@ function Delivery() {
   const deliveryFee = subtotal === 0 ? 0 : 300;
   const total = subtotal + deliveryFee;
 
-  const confirmOrder = (event) => {
+  // Submit order to the backend
+  const confirmOrder = async (event) => {
     event.preventDefault();
+    setMessage("");
 
     if (orders.length === 0) {
       setMessage("Please add products to your order first.");
@@ -232,32 +244,90 @@ function Delivery() {
       !phone.trim() ||
       !address.trim()
     ) {
-      setMessage("Please enter your name, phone number and address.");
+      setMessage(
+        "Please enter your name, phone number and address."
+      );
       return;
     }
 
-    const orderDetails = {
-      customerName,
-      phone,
-      address,
-      items: orders.map(({ id, name, price, quantity }) => ({
-        id,
-        name,
-        price,
+    const token = localStorage.getItem("fitlife-token");
+
+    if (!token) {
+      setMessage("Please log in before placing an order.");
+      return;
+    }
+
+    const payload = {
+      customerName: customerName.trim(),
+      phone: phone.trim(),
+      address: address.trim(),
+      items: orders.map(({ id, quantity }) => ({
+        productId: id,
         quantity,
       })),
-      subtotal,
-      deliveryFee,
-      total,
-      createdAt: new Date().toISOString(),
     };
 
-    // Demo only: this does not send the order to a backend.
-    console.log("FITLIFE Order:", orderDetails);
+    try {
+      setIsSubmitting(true);
 
-    setMessage(
-      "Order details are ready! This is a demo; no backend is connected."
-    );
+      const response = await fetch(
+        "http://localhost:5000/api/orders",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      const contentType =
+        response.headers.get("content-type") || "";
+
+      const result = contentType.includes("application/json")
+        ? await response.json()
+        : {
+            message:
+              "Unexpected response from the server. Check your backend route.",
+          };
+
+      if (
+        response.status === 401 ||
+        response.status === 403
+      ) {
+        setMessage(
+          "Your login session may have expired. Please log in again."
+        );
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          result.message || "Could not place your order."
+        );
+      }
+
+      setMessage(
+        `Order placed successfully! Order ID: ${
+          result.order?._id ||
+          result.orderId ||
+          "confirmed"
+        }`
+      );
+
+      setOrders([]);
+      setCustomerName("");
+      setPhone("");
+      setAddress("");
+    } catch (error) {
+      setMessage(
+        error.message ||
+          "Unable to connect to the backend. Check that the server is running."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -291,7 +361,10 @@ function Delivery() {
             Shop healthy Sri Lankan food and fitness essentials.
           </p>
 
-          <a href="#delivery-products" className="shop-button">
+          <a
+            href="#delivery-products"
+            className="shop-button"
+          >
             Shop Now →
           </a>
         </div>
@@ -322,7 +395,9 @@ function Delivery() {
               type="search"
               placeholder="Search food or fitness products..."
               value={search}
-              onChange={(event) => setSearch(event.target.value)}
+              onChange={(event) =>
+                setSearch(event.target.value)
+              }
             />
           </div>
 
@@ -331,6 +406,7 @@ function Delivery() {
             {categories.map((item) => (
               <button
                 key={item}
+                type="button"
                 className={
                   category === item
                     ? "category-button active"
@@ -346,7 +422,10 @@ function Delivery() {
           {/* PRODUCT GRID */}
           <div className="products-grid">
             {filteredProducts.map((product) => (
-              <article className="product-card" key={product.id}>
+              <article
+                className="product-card"
+                key={product.id}
+              >
                 <div className="product-image-container">
                   <img
                     src={product.image}
@@ -378,6 +457,7 @@ function Delivery() {
                     </strong>
 
                     <button
+                      type="button"
                       className="add-button"
                       onClick={() => addToOrder(product)}
                     >
@@ -400,7 +480,9 @@ function Delivery() {
         <section className="order-section" id="my-order">
           <div className="order-heading">
             <div>
-              <p className="delivery-eyebrow">YOUR SELECTION</p>
+              <p className="delivery-eyebrow">
+                YOUR SELECTION
+              </p>
               <h2>Your Order</h2>
             </div>
 
@@ -442,8 +524,11 @@ function Delivery() {
 
                     <div className="quantity-controls">
                       <button
+                        type="button"
                         aria-label="Decrease quantity"
-                        onClick={() => changeQuantity(item.id, -1)}
+                        onClick={() =>
+                          changeQuantity(item.id, -1)
+                        }
                       >
                         −
                       </button>
@@ -451,8 +536,11 @@ function Delivery() {
                       <span>{item.quantity}</span>
 
                       <button
+                        type="button"
                         aria-label="Increase quantity"
-                        onClick={() => changeQuantity(item.id, 1)}
+                        onClick={() =>
+                          changeQuantity(item.id, 1)
+                        }
                       >
                         +
                       </button>
@@ -465,6 +553,7 @@ function Delivery() {
                     </strong>
 
                     <button
+                      type="button"
                       className="remove-button"
                       onClick={() => removeItem(item.id)}
                     >
@@ -495,41 +584,59 @@ function Delivery() {
           </div>
 
           {/* CUSTOMER DETAILS */}
-          <form className="customer-form" onSubmit={confirmOrder}>
+          <form
+            className="customer-form"
+            onSubmit={confirmOrder}
+          >
             <h3>Delivery Details</h3>
 
-            <label htmlFor="customerName">Full name</label>
+            <label htmlFor="customerName">
+              Full name
+            </label>
             <input
               id="customerName"
               type="text"
               value={customerName}
-              onChange={(event) => setCustomerName(event.target.value)}
+              onChange={(event) =>
+                setCustomerName(event.target.value)
+              }
               placeholder="Enter your name"
               required
             />
 
-            <label htmlFor="customerPhone">Phone number</label>
+            <label htmlFor="customerPhone">
+              Phone number
+            </label>
             <input
               id="customerPhone"
               type="tel"
               value={phone}
-              onChange={(event) => setPhone(event.target.value)}
+              onChange={(event) =>
+                setPhone(event.target.value)
+              }
               placeholder="+94..."
               required
             />
 
-            <label htmlFor="customerAddress">Delivery address</label>
+            <label htmlFor="customerAddress">
+              Delivery address
+            </label>
             <textarea
               id="customerAddress"
               value={address}
-              onChange={(event) => setAddress(event.target.value)}
+              onChange={(event) =>
+                setAddress(event.target.value)
+              }
               placeholder="Enter your delivery address"
-              rows="3"
+              rows={3}
               required
             />
 
             {message && (
-              <p className="order-message" role="status">
+              <p
+                className="order-message"
+                role="status"
+              >
                 {message}
               </p>
             )}
@@ -537,13 +644,18 @@ function Delivery() {
             <button
               type="submit"
               className="checkout-button"
-              disabled={orders.length === 0}
+              disabled={
+                orders.length === 0 || isSubmitting
+              }
             >
-              Confirm Order →
+              {isSubmitting
+                ? "Placing Order..."
+                : "Confirm Order →"}
             </button>
 
             <p className="demo-note">
-              Demo only: connect a backend/API to receive real orders.
+              Your order will be saved securely to your
+              FITLIFE account.
             </p>
           </form>
         </section>
@@ -555,9 +667,13 @@ function Delivery() {
           FIT<span>LIFE</span>
         </a>
 
-        <p>Choose a healthier lifestyle with FITLIFE.</p>
+        <p>
+          Choose a healthier lifestyle with FITLIFE.
+        </p>
 
-        <small>© {new Date().getFullYear()} FITLIFE</small>
+        <small>
+          © {new Date().getFullYear()} FITLIFE
+        </small>
       </footer>
     </div>
   );
